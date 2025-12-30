@@ -1,4 +1,4 @@
-package com.mcp.factorial_mcp_server;
+package com.mcp.factorialmcpserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

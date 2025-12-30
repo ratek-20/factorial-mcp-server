@@ -1,4 +1,4 @@
-package com.mcp.factorial_mcp_server;
+package com.mcp.factorialmcpserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
