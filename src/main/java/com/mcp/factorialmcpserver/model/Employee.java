@@ -1,0 +1,7 @@
+package com.mcp.factorialmcpserver.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record Employee(
+        @JsonProperty("full_name") String fullName
+) {}
