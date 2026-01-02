@@ -1,6 +1,6 @@
-package com.mcp.factorialmcpserver.server;
+package com.mcp.factorialmcpserver.entrypoint.mcp;
 
-import com.mcp.factorialmcpserver.api.FactorialClient;
+import com.mcp.factorialmcpserver.service.api.EmployeeClient;
 import com.mcp.factorialmcpserver.model.Employee;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +11,15 @@ import java.util.List;
 @Component
 public class FactorialTools {
 
-    private final FactorialClient factorialClient;
+    private final EmployeeClient employeeClient;
 
     @Autowired
-    public FactorialTools(FactorialClient factorialClient) {
-        this.factorialClient = factorialClient;
+    public FactorialTools(EmployeeClient employeeClient) {
+        this.employeeClient = employeeClient;
     }
 
     @McpTool(name = "get_employees", description = "Returns the list of the employees of the company.")
     public List<Employee> getEmployees() {
-        return factorialClient.getEmployees();
+        return employeeClient.getEmployees();
     }
 }
