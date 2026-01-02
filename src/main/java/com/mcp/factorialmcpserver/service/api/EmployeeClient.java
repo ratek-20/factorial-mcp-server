@@ -3,6 +3,7 @@ package com.mcp.factorialmcpserver.service.api;
 import com.mcp.factorialmcpserver.model.Employee;
 import com.mcp.factorialmcpserver.service.api.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -14,24 +15,33 @@ import java.util.Optional;
 @Service
 public class EmployeeClient {
 
-    private final RestClient restClient = RestClient.create();
-
-    private static final String API_KEY = ""; // paste your api key here
-
+    private final RestClient baseClient;
     private final AuthManager authManager;
 
+    private static final String BASE_PATH = "/resources/employees/employees";
+
+    // query params
+    private static final String ONLY_ACTIVE = "only_active";
+    private static final String ONLY_MANAGERS = "only_managers";
+
+    @Value( "${factorial-api.api-key}")
+    private String apiKey; // TODO: remove when oauth flow is available
+
     @Autowired
-    public EmployeeClient(AuthManager authManager) {
+    public EmployeeClient(RestClient baseClient, AuthManager authManager) {
+        this.baseClient = baseClient;
         this.authManager = authManager;
     }
 
     public List<Employee> getEmployees() {
         final String accessToken = authManager.getValidAccessToken();
-        final ApiResponse<List<Employee>> response = restClient.get()
-                .uri("https://api.factorialhr.com/api/2025-10-01/resources/employees/employees?only_active=true&only_managers=false")
-                .header("accept", "application/json")
-                .header("authorization", "Bearer " + accessToken)
-                //.header("x-api-key", API_KEY)
+        final ApiResponse<List<Employee>> response = baseClient.get()
+                .uri(uriBuilder -> uriBuilder.path(BASE_PATH)
+                        .queryParam(ONLY_ACTIVE, true)
+                        .queryParam(ONLY_MANAGERS, false)
+                        .build())
+                .headers(headers -> headers.setBearerAuth(accessToken))
+                //.header("x-api-key", API_KEY) // TODO: remove when oauth is tested
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
         if (Objects.isNull(response)) {

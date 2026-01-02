@@ -1,13 +1,13 @@
 package com.mcp.factorialmcpserver.service.api;
 
 import com.mcp.factorialmcpserver.model.auth.OauthToken;
+import com.mcp.factorialmcpserver.service.api.request.AuthUrlFactory;
 import com.mcp.factorialmcpserver.service.exception.BrowserException;
 import com.mcp.factorialmcpserver.service.exception.OAuthStateMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class AuthManager {
 
-    private static final String CLIENT_ID = ""; // paste your client id here
-    private static final String REDIRECT_URI = "http://127.0.0.1:7000/oauth2-callback";
+    private final AuthClient authClient;
+    private final AuthUrlFactory authUrlFactory;
 
     private final AtomicReference<OauthToken> oauthTokenReference = new AtomicReference<>();
     private final AtomicReference<String> stateReference = new AtomicReference<>();
@@ -29,11 +29,10 @@ public class AuthManager {
 
     private static final Logger log = LoggerFactory.getLogger(AuthManager.class);
 
-    private final AuthClient authClient;
-
     @Autowired
-    public AuthManager(AuthClient authClient) {
+    public AuthManager(AuthClient authClient, AuthUrlFactory authUrlFactory) {
         this.authClient = authClient;
+        this.authUrlFactory = authUrlFactory;
     }
 
     public String getValidAccessToken() {
@@ -62,19 +61,7 @@ public class AuthManager {
         Protection against CSRF attacks.
          */
 
-        URI uri = UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("api.factorialhr.com")
-                .path("/oauth/authorize")
-                .queryParam("client_id", CLIENT_ID)
-                .queryParam("redirect_uri", REDIRECT_URI)
-                .queryParam("response_type", "code")
-                .queryParam("state", stateReference.get())
-                .encode()
-                .build()
-                .toUri();
-
-        openBrowser(uri);
+        openBrowser(authUrlFactory.create(stateReference.get()));
     }
 
     private void openBrowser(URI uri) {
