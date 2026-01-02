@@ -19,7 +19,12 @@ public class TeamTools {
     }
 
     @McpTool(name = "get_teams", description = "Returns the list of the teams of the company.")
-    public List<Team> getEmployees() {
+    public List<Team> getTeams() {
         return teamsClient.getTeams();
+    }
+
+    @McpTool(name = "get_team", description = "Returns a single team by its ID.")
+    public Team getTeam(Long id) {
+        return teamsClient.getTeam(id);
     }
 }
