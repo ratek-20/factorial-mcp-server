@@ -34,14 +34,14 @@ public class EmployeeClient {
     }
 
     public List<Employee> getEmployees() {
-        final String accessToken = authManager.getValidAccessToken();
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
         final ApiResponse<List<Employee>> response = baseClient.get()
                 .uri(uriBuilder -> uriBuilder.path(BASE_PATH)
                         .queryParam(ONLY_ACTIVE, true)
                         .queryParam(ONLY_MANAGERS, false)
                         .build())
-                .headers(headers -> headers.setBearerAuth(accessToken))
-                //.header("x-api-key", API_KEY) // TODO: remove when oauth is tested
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
         if (Objects.isNull(response)) {
