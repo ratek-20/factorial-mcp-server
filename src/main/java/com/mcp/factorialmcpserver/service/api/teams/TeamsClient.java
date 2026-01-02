@@ -3,9 +3,11 @@ package com.mcp.factorialmcpserver.service.api.teams;
 import com.mcp.factorialmcpserver.model.Team;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
+import com.mcp.factorialmcpserver.service.api.teams.request.CreateTeamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -53,6 +55,19 @@ public class TeamsClient {
                         .build(id))
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                .retrieve()
+                .body(Team.class);
+    }
+
+    public Team createTeam(String name, String description) {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        CreateTeamRequest body = new CreateTeamRequest(name, description);
+        return baseClient.post()
+                .uri(uriBuilder -> uriBuilder.path(BASE_PATH).build())
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body)
                 .retrieve()
                 .body(Team.class);
     }

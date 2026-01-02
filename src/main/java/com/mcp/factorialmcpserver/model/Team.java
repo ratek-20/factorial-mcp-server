@@ -7,6 +7,7 @@ import java.util.List;
 public record Team(
         Long id,
         String name,
+        String description,
         @JsonProperty("employee_ids") List<Long> employeeIds,
         @JsonProperty("lead_ids") List<Long> leadIds) {
 }
