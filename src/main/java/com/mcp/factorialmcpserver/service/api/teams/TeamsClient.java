@@ -1,6 +1,6 @@
-package com.mcp.factorialmcpserver.service.api.employees;
+package com.mcp.factorialmcpserver.service.api.teams;
 
-import com.mcp.factorialmcpserver.model.Employee;
+import com.mcp.factorialmcpserver.model.Team;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,32 +14,26 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class EmployeeClient {
+public class TeamsClient {
 
     private final RestClient baseClient;
     private final AuthManager authManager;
 
-    private static final String BASE_PATH = "/resources/employees/employees";
-
-    // query params
-    private static final String ONLY_ACTIVE = "only_active";
-    private static final String ONLY_MANAGERS = "only_managers";
+    private static final String BASE_PATH = "/resources/teams/teams";
 
     @Value( "${factorial-api.api-key}")
     private String apiKey; // TODO: remove when oauth flow is available
 
     @Autowired
-    public EmployeeClient(RestClient baseClient, AuthManager authManager) {
+    public TeamsClient(RestClient baseClient, AuthManager authManager) {
         this.baseClient = baseClient;
         this.authManager = authManager;
     }
 
-    public List<Employee> getEmployees() {
+    public List<Team> getTeams() {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final GenericApiResponse<List<Employee>> response = baseClient.get()
+        final GenericApiResponse<List<Team>> response = baseClient.get()
                 .uri(uriBuilder -> uriBuilder.path(BASE_PATH)
-                        .queryParam(ONLY_ACTIVE, true)
-                        .queryParam(ONLY_MANAGERS, false)
                         .build())
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
