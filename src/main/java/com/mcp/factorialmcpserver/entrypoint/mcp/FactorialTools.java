@@ -1,6 +1,6 @@
 package com.mcp.factorialmcpserver.entrypoint.mcp;
 
-import com.mcp.factorialmcpserver.service.api.EmployeeClient;
+import com.mcp.factorialmcpserver.service.api.employees.EmployeeClient;
 import com.mcp.factorialmcpserver.model.Employee;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springframework.beans.factory.annotation.Autowired;

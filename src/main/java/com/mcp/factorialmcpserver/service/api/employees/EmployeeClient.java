@@ -1,7 +1,8 @@
-package com.mcp.factorialmcpserver.service.api;
+package com.mcp.factorialmcpserver.service.api.employees;
 
 import com.mcp.factorialmcpserver.model.Employee;
-import com.mcp.factorialmcpserver.service.api.response.ApiResponse;
+import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
+import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -35,7 +36,7 @@ public class EmployeeClient {
 
     public List<Employee> getEmployees() {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final ApiResponse<List<Employee>> response = baseClient.get()
+        final GenericApiResponse<List<Employee>> response = baseClient.get()
                 .uri(uriBuilder -> uriBuilder.path(BASE_PATH)
                         .queryParam(ONLY_ACTIVE, true)
                         .queryParam(ONLY_MANAGERS, false)

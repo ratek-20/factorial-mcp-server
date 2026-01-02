@@ -1,9 +1,9 @@
-package com.mcp.factorialmcpserver.service.api;
+package com.mcp.factorialmcpserver.service.api.authorization;
 
 import com.mcp.factorialmcpserver.model.auth.OauthToken;
-import com.mcp.factorialmcpserver.service.api.request.OauthRequest;
-import com.mcp.factorialmcpserver.service.api.response.OauthResponse;
-import com.mcp.factorialmcpserver.service.api.response.mapper.TokenMapper;
+import com.mcp.factorialmcpserver.service.api.authorization.mapper.TokenMapper;
+import com.mcp.factorialmcpserver.service.api.authorization.request.OauthRequest;
+import com.mcp.factorialmcpserver.service.api.authorization.response.OauthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;

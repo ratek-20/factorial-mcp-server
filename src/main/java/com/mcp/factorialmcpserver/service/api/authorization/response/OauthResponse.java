@@ -1,4 +1,4 @@
-package com.mcp.factorialmcpserver.service.api.response;
+package com.mcp.factorialmcpserver.service.api.authorization.response;
 
 public record OauthResponse(
         String access_token,

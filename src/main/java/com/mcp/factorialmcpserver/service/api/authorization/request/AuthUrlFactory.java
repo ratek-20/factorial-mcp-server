@@ -1,4 +1,4 @@
-package com.mcp.factorialmcpserver.service.api.request;
+package com.mcp.factorialmcpserver.service.api.authorization.request;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

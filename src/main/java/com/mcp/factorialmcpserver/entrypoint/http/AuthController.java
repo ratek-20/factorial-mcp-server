@@ -1,6 +1,6 @@
 package com.mcp.factorialmcpserver.entrypoint.http;
 
-import com.mcp.factorialmcpserver.service.api.AuthManager;
+import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

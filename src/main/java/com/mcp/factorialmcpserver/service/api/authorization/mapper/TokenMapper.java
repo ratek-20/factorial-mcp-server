@@ -1,8 +1,8 @@
-package com.mcp.factorialmcpserver.service.api.response.mapper;
+package com.mcp.factorialmcpserver.service.api.authorization.mapper;
 
 import com.mcp.factorialmcpserver.model.auth.AccessToken;
-import com.mcp.factorialmcpserver.service.api.response.OauthResponse;
 import com.mcp.factorialmcpserver.model.auth.OauthToken;
+import com.mcp.factorialmcpserver.service.api.authorization.response.OauthResponse;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

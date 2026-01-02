@@ -1,7 +1,7 @@
-package com.mcp.factorialmcpserver.service.api;
+package com.mcp.factorialmcpserver.service.api.authorization;
 
 import com.mcp.factorialmcpserver.model.auth.OauthToken;
-import com.mcp.factorialmcpserver.service.api.request.AuthUrlFactory;
+import com.mcp.factorialmcpserver.service.api.authorization.request.AuthUrlFactory;
 import com.mcp.factorialmcpserver.service.exception.BrowserException;
 import com.mcp.factorialmcpserver.service.exception.OAuthStateMismatchException;
 import org.slf4j.Logger;
