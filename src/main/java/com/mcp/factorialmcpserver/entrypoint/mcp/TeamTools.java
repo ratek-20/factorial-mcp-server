@@ -1,7 +1,11 @@
 package com.mcp.factorialmcpserver.entrypoint.mcp;
 
+import com.mcp.factorialmcpserver.model.Employee;
 import com.mcp.factorialmcpserver.model.Team;
+import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.teams.TeamsClient;
+import com.mcp.factorialmcpserver.service.exception.EmployeeNotFoundException;
+import com.mcp.factorialmcpserver.service.exception.TeamNotFoundException;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +17,12 @@ import java.util.List;
 public class TeamTools {
 
     private final TeamsClient teamsClient;
+    private final EmployeesClient employeesClient;
 
     @Autowired
-    public TeamTools(TeamsClient teamsClient) {
+    public TeamTools(TeamsClient teamsClient, EmployeesClient employeesClient) {
         this.teamsClient = teamsClient;
+        this.employeesClient = employeesClient;
     }
 
     @McpTool(name = "get_teams", description = "Returns the list of the teams of the company.")
@@ -28,4 +34,22 @@ public class TeamTools {
     public Team createTeam(String name, @McpToolParam(required = false) String description) {
         return teamsClient.createTeam(name, description);
     }
+
+    @McpTool(name = "create_membership", description = "Creates a membership by employee full name and team name.")
+    public void createMembership(String fullName, String teamName) {
+        final Employee employee = employeesClient.getEmployees().stream()
+                .filter(e -> fullName.equalsIgnoreCase(e.fullName()))
+                .findFirst()
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with name: " + fullName));
+
+        final Team team = teamsClient.getTeams().stream()
+                .filter(t -> teamName.equalsIgnoreCase(t.name()))
+                .findFirst()
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with name: " + teamName));
+
+        teamsClient.addMembership(employee.id(), team.id());
+    }
+
+
+
 }

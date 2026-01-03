@@ -3,6 +3,7 @@ package com.mcp.factorialmcpserver.service.api.teams;
 import com.mcp.factorialmcpserver.model.Team;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
+import com.mcp.factorialmcpserver.service.api.teams.request.AddMembershipRequest;
 import com.mcp.factorialmcpserver.service.api.teams.request.CreateTeamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,8 @@ public class TeamsClient {
     private final RestClient baseClient;
     private final AuthManager authManager;
 
-    private static final String BASE_PATH = "/resources/teams/teams";
+    private static final String BASE_PATH = "/resources/teams";
+    private static final String TEAMS_PATH = "/teams";
 
     @Value( "${factorial-api.api-key}")
     private String apiKey; // TODO: remove when oauth flow is available
@@ -35,7 +37,7 @@ public class TeamsClient {
     public List<Team> getTeams() {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
         final GenericApiResponse<List<Team>> response = baseClient.get()
-                .uri(uriBuilder -> uriBuilder.path(BASE_PATH)
+                .uri(uriBuilder -> uriBuilder.path(BASE_PATH + TEAMS_PATH)
                         .build())
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
@@ -52,13 +54,27 @@ public class TeamsClient {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
         CreateTeamRequest body = new CreateTeamRequest(name, description);
         return baseClient.post()
-                .uri(uriBuilder -> uriBuilder.path(BASE_PATH).build())
+                .uri(uriBuilder -> uriBuilder.path(BASE_PATH + TEAMS_PATH).build())
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(body)
                 .retrieve()
                 .body(Team.class);
+    }
+
+    public void addMembership(Long employeeId, Long teamId) {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final AddMembershipRequest body = new AddMembershipRequest(employeeId, teamId);
+        final String membershipPath = "/memberships";
+        baseClient.post()
+                .uri(uriBuilder -> uriBuilder.path(BASE_PATH + membershipPath).build())
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body)
+                .retrieve()
+                .toBodilessEntity();
     }
 
 }
