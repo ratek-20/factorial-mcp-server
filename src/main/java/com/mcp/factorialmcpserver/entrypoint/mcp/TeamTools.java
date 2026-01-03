@@ -24,11 +24,6 @@ public class TeamTools {
         return teamsClient.getTeams();
     }
 
-    @McpTool(name = "get_team", description = "Returns a single team by its ID.")
-    public Team getTeam(Long id) {
-        return teamsClient.getTeam(id);
-    }
-
     @McpTool(name = "create_team", description = "Creates a team by name and description.")
     public Team createTeam(String name, @McpToolParam(required = false) String description) {
         return teamsClient.createTeam(name, description);

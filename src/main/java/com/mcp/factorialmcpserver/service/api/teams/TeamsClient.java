@@ -48,17 +48,6 @@ public class TeamsClient {
                 .orElse(List.of());
     }
 
-    public Team getTeam(Long id) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        return baseClient.get()
-                .uri(uriBuilder -> uriBuilder.path(BASE_PATH + "/{id}")
-                        .build(id))
-                //.headers(headers -> headers.setBearerAuth(accessToken))
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                .retrieve()
-                .body(Team.class);
-    }
-
     public Team createTeam(String name, String description) {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
         CreateTeamRequest body = new CreateTeamRequest(name, description);
