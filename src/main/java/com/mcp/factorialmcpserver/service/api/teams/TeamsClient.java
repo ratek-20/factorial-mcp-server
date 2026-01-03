@@ -1,5 +1,6 @@
 package com.mcp.factorialmcpserver.service.api.teams;
 
+import com.mcp.factorialmcpserver.model.Membership;
 import com.mcp.factorialmcpserver.model.Team;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
@@ -75,6 +76,24 @@ public class TeamsClient {
                 .body(body)
                 .retrieve()
                 .toBodilessEntity();
+    }
+
+    public List<Membership> getMemberships(List<Long> teamIds) {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String membershipPath = "/memberships";
+        final GenericApiResponse<List<Membership>> response = baseClient.get()
+                .uri(uriBuilder -> uriBuilder.path(BASE_PATH + membershipPath)
+                        .queryParam("team_ids[]", teamIds)
+                        .build())
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+        if (Objects.isNull(response)) {
+            return List.of();
+        }
+        return Optional.ofNullable(response.data())
+                .orElse(List.of());
     }
 
 }

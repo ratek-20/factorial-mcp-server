@@ -1,6 +1,7 @@
 package com.mcp.factorialmcpserver.entrypoint.mcp;
 
 import com.mcp.factorialmcpserver.model.Employee;
+import com.mcp.factorialmcpserver.model.Membership;
 import com.mcp.factorialmcpserver.model.Team;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.teams.TeamsClient;
@@ -41,15 +42,28 @@ public class TeamTools {
                 .filter(e -> fullName.equalsIgnoreCase(e.fullName()))
                 .findFirst()
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with name: " + fullName));
-
-        final Team team = teamsClient.getTeams().stream()
-                .filter(t -> teamName.equalsIgnoreCase(t.name()))
-                .findFirst()
-                .orElseThrow(() -> new TeamNotFoundException("Team not found with name: " + teamName));
-
+        final Team team = getTeam(teamName);
         teamsClient.addMembership(employee.id(), team.id());
     }
 
+    @McpTool(name = "get_team_composition", description = "Returns the list of employees belonging to a team by team name.")
+    public List<Employee> getTeamComposition(String name) {
+        final Team team = getTeam(name);
+        final List<Membership> memberships = teamsClient.getMemberships(List.of(team.id()));
+        final List<Long> employeeIds = memberships.stream()
+                .map(Membership::employeeId)
+                .toList();
+        return employeesClient.getEmployees().stream()
+                .filter(e -> employeeIds.contains(e.id()))
+                .toList();
+    }
+
+    private Team getTeam(String name) {
+        return teamsClient.getTeams().stream()
+                .filter(team -> name.equalsIgnoreCase(team.name()))
+                .findFirst()
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with name: " + name));
+    }
 
 
 }
