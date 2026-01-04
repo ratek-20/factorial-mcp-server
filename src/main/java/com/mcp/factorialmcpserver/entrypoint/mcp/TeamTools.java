@@ -5,10 +5,8 @@ import com.mcp.factorialmcpserver.model.Membership;
 import com.mcp.factorialmcpserver.model.Team;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.teams.TeamsClient;
-import com.mcp.factorialmcpserver.service.exception.EmployeeNotFoundException;
 import com.mcp.factorialmcpserver.service.exception.TeamNotFoundException;
 import org.springaicommunity.mcp.annotation.McpTool;
-import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,24 +29,12 @@ public class TeamTools {
         return teamsClient.getTeams();
     }
 
-    @McpTool(name = "create_team", description = "Creates a team by name and description.")
-    public Team createTeam(String name, @McpToolParam(required = false) String description) {
-        return teamsClient.createTeam(name, description);
-    }
-
-    @McpTool(name = "create_membership", description = "Creates a membership by employee full name and team name.")
-    public void createMembership(String fullName, String teamName) {
-        final Employee employee = employeesClient.getEmployees().stream()
-                .filter(e -> fullName.equalsIgnoreCase(e.fullName()))
-                .findFirst()
-                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with name: " + fullName));
-        final Team team = getTeam(teamName);
-        teamsClient.addMembership(employee.id(), team.id());
-    }
-
     @McpTool(name = "get_team_composition", description = "Returns the list of employees belonging to a team by team name.")
     public List<Employee> getTeamComposition(String name) {
-        final Team team = getTeam(name);
+        final Team team = teamsClient.getTeams().stream()
+                .filter(team1 -> name.equalsIgnoreCase(team1.name()))
+                .findFirst()
+                .orElseThrow(() -> new TeamNotFoundException("Team not found with name: " + name));
         final List<Membership> memberships = teamsClient.getMemberships(List.of(team.id()));
         final List<Long> employeeIds = memberships.stream()
                 .map(Membership::employeeId)
@@ -56,13 +42,6 @@ public class TeamTools {
         return employeesClient.getEmployees().stream()
                 .filter(e -> employeeIds.contains(e.id()))
                 .toList();
-    }
-
-    private Team getTeam(String name) {
-        return teamsClient.getTeams().stream()
-                .filter(team -> name.equalsIgnoreCase(team.name()))
-                .findFirst()
-                .orElseThrow(() -> new TeamNotFoundException("Team not found with name: " + name));
     }
 
 

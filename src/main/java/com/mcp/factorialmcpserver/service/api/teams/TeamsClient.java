@@ -4,12 +4,9 @@ import com.mcp.factorialmcpserver.model.Membership;
 import com.mcp.factorialmcpserver.model.Team;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
-import com.mcp.factorialmcpserver.service.api.teams.request.AddMembershipRequest;
-import com.mcp.factorialmcpserver.service.api.teams.request.CreateTeamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -49,33 +46,6 @@ public class TeamsClient {
         }
         return Optional.ofNullable(response.data())
                 .orElse(List.of());
-    }
-
-    public Team createTeam(String name, String description) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        CreateTeamRequest body = new CreateTeamRequest(name, description);
-        return baseClient.post()
-                .uri(uriBuilder -> uriBuilder.path(BASE_PATH + TEAMS_PATH).build())
-                //.headers(headers -> headers.setBearerAuth(accessToken))
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(body)
-                .retrieve()
-                .body(Team.class);
-    }
-
-    public void addMembership(Long employeeId, Long teamId) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final AddMembershipRequest body = new AddMembershipRequest(employeeId, teamId);
-        final String membershipPath = "/memberships";
-        baseClient.post()
-                .uri(uriBuilder -> uriBuilder.path(BASE_PATH + membershipPath).build())
-                //.headers(headers -> headers.setBearerAuth(accessToken))
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(body)
-                .retrieve()
-                .toBodilessEntity();
     }
 
     public List<Membership> getMemberships(List<Long> teamIds) {
