@@ -2,9 +2,10 @@ package com.mcp.factorialmcpserver.entrypoint.mcp;
 
 import com.mcp.factorialmcpserver.model.AllowanceStats;
 import com.mcp.factorialmcpserver.model.Employee;
+import com.mcp.factorialmcpserver.model.Leave;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.TimeOffClient;
-import com.mcp.factorialmcpserver.service.api.timeoff.request.TimeOffRequest;
+import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
 import com.mcp.factorialmcpserver.service.exception.EmployeeNotFoundException;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springaicommunity.mcp.annotation.McpToolParam;
@@ -47,9 +48,14 @@ public class TimeOffTools {
     ) {
         final Employee employee = getEmployee(fullName);
 
-        timeOffClient.requestTimeOff(new TimeOffRequest(employee.id(), startOn, finishOn));
+        timeOffClient.requestLeave(new LeaveRequest(employee.id(), startOn, finishOn));
 
         return "Time off requested successfully for " + fullName + " from " + startOn + " to " + finishOn;
+    }
+
+    @McpTool(name = "read_time_offs", description = "Returns the list of time offs.")
+    public List<Leave> readTimeOffRequests() {
+        return timeOffClient.getLeaves();
     }
 
     private Employee getEmployee(String fullName) {

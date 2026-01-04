@@ -1,9 +1,10 @@
 package com.mcp.factorialmcpserver.service.api.timeoff;
 
 import com.mcp.factorialmcpserver.model.AllowanceStats;
+import com.mcp.factorialmcpserver.model.Leave;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
-import com.mcp.factorialmcpserver.service.api.timeoff.request.TimeOffRequest;
+import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -51,7 +52,7 @@ public class TimeOffClient {
                 .orElse(List.of());
     }
 
-    public void requestTimeOff(TimeOffRequest request) {
+    public void requestLeave(LeaveRequest request) {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
         final String leavesPath = "/leaves";
         baseClient.post()
@@ -61,5 +62,21 @@ public class TimeOffClient {
                 .body(request)
                 .retrieve()
                 .toBodilessEntity();
+    }
+
+    public List<Leave> getLeaves() {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String leavesPath = "/leaves";
+        final GenericApiResponse<List<Leave>> response = baseClient.get()
+                .uri(COMMON_ROOT + leavesPath)
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+        if (Objects.isNull(response)) {
+            return List.of();
+        }
+        return Optional.ofNullable(response.data())
+                .orElse(List.of());
     }
 }
