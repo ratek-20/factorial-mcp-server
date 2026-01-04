@@ -24,6 +24,7 @@ public class TimeOffClient {
     private final AuthManager authManager;
 
     private static final String COMMON_ROOT = "/resources/timeoff";
+    private static final String LEAVES_PATH = "/leaves";
 
     @Value("${factorial-api.api-key}")
     private String apiKey; // TODO: remove when oauth flow is available
@@ -56,9 +57,8 @@ public class TimeOffClient {
 
     public void requestLeave(LeaveRequest request) {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final String leavesPath = "/leaves";
         baseClient.post()
-                .uri(COMMON_ROOT + leavesPath)
+                .uri(COMMON_ROOT + LEAVES_PATH)
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .body(request)
@@ -68,9 +68,8 @@ public class TimeOffClient {
 
     public List<Leave> getLeaves() {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final String leavesPath = "/leaves";
         final GenericApiResponse<List<Leave>> response = baseClient.get()
-                .uri(COMMON_ROOT + leavesPath)
+                .uri(COMMON_ROOT + LEAVES_PATH)
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
@@ -84,9 +83,9 @@ public class TimeOffClient {
 
     public void approveLeave(Long id) {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final String approvePath = "/leaves/approve";
+        final String approvePath = "/approve";
         baseClient.post()
-                .uri(COMMON_ROOT + approvePath)
+                .uri(COMMON_ROOT + LEAVES_PATH + approvePath)
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .body(new ApproveLeaveRequest(id))
@@ -96,12 +95,21 @@ public class TimeOffClient {
 
     public void updateLeave(Long id, UpdateLeaveRequest request) {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final String leavePath = "/leaves/" + id;
         baseClient.put()
-                .uri(COMMON_ROOT + leavePath)
+                .uri(COMMON_ROOT + LEAVES_PATH + "/" + id)
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .body(request)
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    public void deleteLeave(Long id) {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        baseClient.delete()
+                .uri(COMMON_ROOT + LEAVES_PATH + "/" + id)
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                //.headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .toBodilessEntity();
     }

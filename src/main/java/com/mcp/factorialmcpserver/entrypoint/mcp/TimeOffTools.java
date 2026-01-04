@@ -77,6 +77,12 @@ public class TimeOffTools {
         return "Time off with ID " + leaveId + " has been updated successfully. New dates: " + newStartOn + " to " + newFinishOn;
     }
 
+    @McpTool(name = "delete_time_off", description = "Deletes a time off request.")
+    public String deleteTimeOff(Long leaveId) {
+        timeOffClient.deleteLeave(leaveId);
+        return "Time off with ID " + leaveId + " has been deleted successfully.";
+    }
+
     private Employee getEmployee(String fullName) {
         return employeesClient.getEmployees().stream()
                 .filter(e -> fullName.equalsIgnoreCase(e.fullName()))
