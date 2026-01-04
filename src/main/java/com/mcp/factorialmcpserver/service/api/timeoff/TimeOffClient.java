@@ -68,8 +68,11 @@ public class TimeOffClient {
 
     public List<Leave> getLeaves() {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String includeDeletedQueryParam = "include_deleted_leaves";
         final GenericApiResponse<List<Leave>> response = baseClient.get()
-                .uri(COMMON_ROOT + LEAVES_PATH)
+                .uri(uriBuilder -> uriBuilder.path(COMMON_ROOT + LEAVES_PATH)
+                        .queryParam(includeDeletedQueryParam, false)
+                        .build())
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
