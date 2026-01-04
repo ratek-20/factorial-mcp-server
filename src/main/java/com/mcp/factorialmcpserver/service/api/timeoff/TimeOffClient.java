@@ -3,6 +3,7 @@ package com.mcp.factorialmcpserver.service.api.timeoff;
 import com.mcp.factorialmcpserver.model.AllowanceStats;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
+import com.mcp.factorialmcpserver.service.api.timeoff.request.TimeOffRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,7 +20,7 @@ public class TimeOffClient {
     private final RestClient baseClient;
     private final AuthManager authManager;
 
-    private static final String BASE_PATH = "/resources/timeoff/allowance_stats";
+    private static final String COMMON_ROOT = "/resources/timeoff";
 
     @Value("${factorial-api.api-key}")
     private String apiKey; // TODO: remove when oauth flow is available
@@ -32,9 +33,10 @@ public class TimeOffClient {
 
     public List<AllowanceStats> getAllowanceStats(Long employeeId) {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String allowanceStatsPath = "/allowance_stats";
         final String employeeIdsParam = "employee_ids[]";
         final GenericApiResponse<List<AllowanceStats>> response = baseClient.get()
-                .uri(uriBuilder -> uriBuilder.path(BASE_PATH)
+                .uri(uriBuilder -> uriBuilder.path(COMMON_ROOT + allowanceStatsPath)
                         .queryParam(employeeIdsParam, employeeId)
                         .build()
                 )
@@ -47,5 +49,17 @@ public class TimeOffClient {
         }
         return Optional.ofNullable(response.data())
                 .orElse(List.of());
+    }
+
+    public void requestTimeOff(TimeOffRequest request) {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String leavesPath = "/leaves";
+        baseClient.post()
+                .uri(COMMON_ROOT + leavesPath)
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .body(request)
+                .retrieve()
+                .toBodilessEntity();
     }
 }
