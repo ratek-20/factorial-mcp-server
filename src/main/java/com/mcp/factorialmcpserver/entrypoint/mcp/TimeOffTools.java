@@ -82,9 +82,11 @@ public class TimeOffTools {
     public String updateTimeOff(
             Long leaveId,
             @McpToolParam(description = "The new start date of the time off in YYYY-MM-DD format.") String newStartOn,
-            @McpToolParam(description = "The new end date of the time off in YYYY-MM-DD format.") String newFinishOn
+            @McpToolParam(description = "The new end date of the time off in YYYY-MM-DD format.") String newFinishOn,
+            @McpToolParam(description = "If not provided, it will be automatically defaulted as 'vacation'.", required = false) Long leaveTypeId,
+            @McpToolParam(description = "If not provided, it will be automatically defaulted as 'full day'.", required = false) HalfDay halfDay
     ) {
-        timeOffClient.updateLeave(leaveId, new UpdateLeaveRequest(leaveId, newStartOn, newFinishOn));
+        timeOffClient.updateLeave(leaveId, new UpdateLeaveRequest(leaveId, newStartOn, newFinishOn, leaveTypeId, halfDay));
         return "Time off with ID " + leaveId + " has been updated successfully. New dates: " + newStartOn + " to " + newFinishOn;
     }
 
