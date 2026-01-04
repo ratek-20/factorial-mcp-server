@@ -68,7 +68,7 @@ public class TimeOffTools {
     }
 
     @McpTool(name = "read_time_offs", description = "Returns the list of time offs.")
-    public List<Leave> readTimeOffRequests() {
+    public List<Leave> readTimeOffs() {
         return timeOffClient.getLeaves();
     }
 
