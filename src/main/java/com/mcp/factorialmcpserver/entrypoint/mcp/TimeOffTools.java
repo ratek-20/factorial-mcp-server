@@ -6,6 +6,7 @@ import com.mcp.factorialmcpserver.model.Leave;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.TimeOffClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
+import com.mcp.factorialmcpserver.service.api.timeoff.request.UpdateLeaveRequest;
 import com.mcp.factorialmcpserver.service.exception.EmployeeNotFoundException;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springaicommunity.mcp.annotation.McpToolParam;
@@ -68,6 +69,12 @@ public class TimeOffTools {
     public String approveTimeOff(Long leaveId) {
         timeOffClient.approveLeave(leaveId);
         return "Time off with ID " + leaveId + " has been approved.";
+    }
+
+    @McpTool(name = "update_time_off", description = "Updates a time off request.")
+    public String updateTimeOff(Long leaveId, String newStartOn, String newFinishOn) {
+        timeOffClient.updateLeave(leaveId, new UpdateLeaveRequest(leaveId, newStartOn, newFinishOn));
+        return "Time off with ID " + leaveId + " has been updated successfully. New dates: " + newStartOn + " to " + newFinishOn;
     }
 
     private Employee getEmployee(String fullName) {
