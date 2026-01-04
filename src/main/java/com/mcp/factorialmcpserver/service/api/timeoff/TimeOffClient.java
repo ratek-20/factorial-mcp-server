@@ -4,6 +4,7 @@ import com.mcp.factorialmcpserver.model.AllowanceStats;
 import com.mcp.factorialmcpserver.model.Leave;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
+import com.mcp.factorialmcpserver.service.api.timeoff.request.ApproveLeaveRequest;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,4 +80,17 @@ public class TimeOffClient {
         return Optional.ofNullable(response.data())
                 .orElse(List.of());
     }
+
+    public void approveLeave(Long id) {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String approvePath = "/leaves/approve";
+        baseClient.post()
+                .uri(COMMON_ROOT + approvePath)
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .body(new ApproveLeaveRequest(id))
+                .retrieve()
+                .toBodilessEntity();
+    }
+
 }

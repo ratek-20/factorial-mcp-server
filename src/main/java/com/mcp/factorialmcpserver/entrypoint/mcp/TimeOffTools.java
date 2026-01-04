@@ -40,6 +40,12 @@ public class TimeOffTools {
                 .orElse(0.0);
     }
 
+
+    /*
+    The following tool names use the "time off" concept, even though they refer to "leaves" in the Factorial domain.
+    I made this decision because I believe that "time off" is semantically more accurate when it comes to describing regular work absences.
+     */
+
     @McpTool(name = "request_time_off", description = "Requests time off for the current user.")
     public String requestTimeOff(
             @McpToolParam(description = "The full name of the employee. This should be the name of the user currently using the agentic client.") String fullName,
@@ -56,6 +62,12 @@ public class TimeOffTools {
     @McpTool(name = "read_time_offs", description = "Returns the list of time offs.")
     public List<Leave> readTimeOffRequests() {
         return timeOffClient.getLeaves();
+    }
+
+    @McpTool(name = "approve_time_off", description = "Approves a time off request.")
+    public String approveTimeOff(Long leaveId) {
+        timeOffClient.approveLeave(leaveId);
+        return "Time off with ID " + leaveId + " has been approved.";
     }
 
     private Employee getEmployee(String fullName) {
