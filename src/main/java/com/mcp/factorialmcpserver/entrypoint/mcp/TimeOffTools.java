@@ -4,6 +4,7 @@ import com.mcp.factorialmcpserver.model.AllowanceStats;
 import com.mcp.factorialmcpserver.model.Employee;
 import com.mcp.factorialmcpserver.model.Leave;
 import com.mcp.factorialmcpserver.model.LeaveType;
+import com.mcp.factorialmcpserver.model.HalfDay;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.TimeOffClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
@@ -53,12 +54,11 @@ public class TimeOffTools {
             @McpToolParam(description = "The full name of the employee. This should be the name of the user currently using the agentic client.") String fullName,
             @McpToolParam(description = "The start date of the time off in YYYY-MM-DD format.") String startOn,
             @McpToolParam(description = "The finish date of the time off in YYYY-MM-DD format.") String finishOn,
-            @McpToolParam(description = "If not provided, it will be automatically defaulted as 'vacation'.", required = false) Long leaveTypeId
+            @McpToolParam(description = "If not provided, it will be automatically defaulted as 'vacation'.", required = false) Long leaveTypeId,
+            @McpToolParam(description = "If not provided, it will be automatically defaulted as 'full day'.", required = false) HalfDay halfDay
     ) {
         final Employee employee = getEmployee(fullName);
-
-        timeOffClient.requestLeave(new LeaveRequest(employee.id(), startOn, finishOn, leaveTypeId));
-
+        timeOffClient.requestLeave(new LeaveRequest(employee.id(), startOn, finishOn, leaveTypeId, halfDay));
         return "Time off requested successfully for " + fullName + " from " + startOn + " to " + finishOn;
     }
 
@@ -79,7 +79,11 @@ public class TimeOffTools {
     }
 
     @McpTool(name = "update_time_off", description = "Updates a time off request.")
-    public String updateTimeOff(Long leaveId, String newStartOn, String newFinishOn) {
+    public String updateTimeOff(
+            Long leaveId,
+            @McpToolParam(description = "The new start date of the time off in YYYY-MM-DD format.") String newStartOn,
+            @McpToolParam(description = "The new end date of the time off in YYYY-MM-DD format.") String newFinishOn
+    ) {
         timeOffClient.updateLeave(leaveId, new UpdateLeaveRequest(leaveId, newStartOn, newFinishOn));
         return "Time off with ID " + leaveId + " has been updated successfully. New dates: " + newStartOn + " to " + newFinishOn;
     }
