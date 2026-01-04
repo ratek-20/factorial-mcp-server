@@ -3,6 +3,7 @@ package com.mcp.factorialmcpserver.entrypoint.mcp;
 import com.mcp.factorialmcpserver.model.AllowanceStats;
 import com.mcp.factorialmcpserver.model.Employee;
 import com.mcp.factorialmcpserver.model.Leave;
+import com.mcp.factorialmcpserver.model.LeaveType;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.TimeOffClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
@@ -51,13 +52,19 @@ public class TimeOffTools {
     public String requestTimeOff(
             @McpToolParam(description = "The full name of the employee. This should be the name of the user currently using the agentic client.") String fullName,
             @McpToolParam(description = "The start date of the time off in YYYY-MM-DD format.") String startOn,
-            @McpToolParam(description = "The finish date of the time off in YYYY-MM-DD format.") String finishOn
+            @McpToolParam(description = "The finish date of the time off in YYYY-MM-DD format.") String finishOn,
+            @McpToolParam(description = "If not provided, it will be automatically defaulted as 'vacation'.", required = false) Long leaveTypeId
     ) {
         final Employee employee = getEmployee(fullName);
 
-        timeOffClient.requestLeave(new LeaveRequest(employee.id(), startOn, finishOn));
+        timeOffClient.requestLeave(new LeaveRequest(employee.id(), startOn, finishOn, leaveTypeId));
 
         return "Time off requested successfully for " + fullName + " from " + startOn + " to " + finishOn;
+    }
+
+    @McpTool(name = "get_leave_types", description = "Returns the list of available leave types.")
+    public List<LeaveType> getLeaveTypes() {
+        return timeOffClient.getLeaveTypes();
     }
 
     @McpTool(name = "read_time_offs", description = "Returns the list of time offs.")

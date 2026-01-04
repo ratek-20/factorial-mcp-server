@@ -2,6 +2,7 @@ package com.mcp.factorialmcpserver.service.api.timeoff;
 
 import com.mcp.factorialmcpserver.model.AllowanceStats;
 import com.mcp.factorialmcpserver.model.Leave;
+import com.mcp.factorialmcpserver.model.LeaveType;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.ApproveLeaveRequest;
@@ -115,6 +116,22 @@ public class TimeOffClient {
                 //.headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .toBodilessEntity();
+    }
+
+    public List<LeaveType> getLeaveTypes() {
+        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String leaveTypesPath = "/leave_types";
+        final GenericApiResponse<List<LeaveType>> response = baseClient.get()
+                .uri(COMMON_ROOT + leaveTypesPath)
+                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+        if (Objects.isNull(response)) {
+            return List.of();
+        }
+        return Optional.ofNullable(response.data())
+                .orElse(List.of());
     }
 
 }

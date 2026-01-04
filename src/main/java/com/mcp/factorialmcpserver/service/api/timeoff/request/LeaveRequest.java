@@ -5,5 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record LeaveRequest(
     @JsonProperty("employee_id") Long employeeId,
     @JsonProperty("start_on") String startOn,
-    @JsonProperty("finish_on") String finishOn
+    @JsonProperty("finish_on") String finishOn,
+    @JsonProperty("leave_type_id") Long leaveTypeId
 ) {}
