@@ -1,15 +1,13 @@
 package com.mcp.factorialmcpserver.entrypoint.mcp;
 
 import com.mcp.factorialmcpserver.model.AllowanceStats;
-import com.mcp.factorialmcpserver.model.Employee;
+import com.mcp.factorialmcpserver.model.HalfDay;
 import com.mcp.factorialmcpserver.model.Leave;
 import com.mcp.factorialmcpserver.model.LeaveType;
-import com.mcp.factorialmcpserver.model.HalfDay;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.TimeOffClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.UpdateLeaveRequest;
-import com.mcp.factorialmcpserver.service.exception.EmployeeNotFoundException;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +28,8 @@ public class TimeOffTools {
     }
 
     @McpTool(name = "get_available_vacation_days", description = "Returns the available vacation days for the current user.")
-    public Double getAvailableVacationDays(
-            @McpToolParam(description = "The full name of the employee. This should be the name of the user currently using the agentic client.") String fullName
-    ) {
-        final Employee employee = getEmployee(fullName);
-
-        final List<AllowanceStats> stats = timeOffClient.getAllowanceStats(employee.id());
-
+    public Double getAvailableVacationDays(Long employeeId) {
+        final List<AllowanceStats> stats = timeOffClient.getAllowanceStats(employeeId);
         return stats.stream()
                 .findFirst()
                 .map(AllowanceStats::availableDays)
@@ -51,15 +44,14 @@ public class TimeOffTools {
 
     @McpTool(name = "request_time_off", description = "Requests time off for the current user.")
     public String requestTimeOff(
-            @McpToolParam(description = "The full name of the employee. This should be the name of the user currently using the agentic client.") String fullName,
+            Long employeeId,
             @McpToolParam(description = "The start date of the time off in YYYY-MM-DD format.") String startOn,
             @McpToolParam(description = "The finish date of the time off in YYYY-MM-DD format.") String finishOn,
             @McpToolParam(description = "If not provided, it will be automatically defaulted as 'vacation'.", required = false) Long leaveTypeId,
             @McpToolParam(description = "If not provided, it will be automatically defaulted as 'full day'.", required = false) HalfDay halfDay
     ) {
-        final Employee employee = getEmployee(fullName);
-        timeOffClient.requestLeave(new LeaveRequest(employee.id(), startOn, finishOn, leaveTypeId, halfDay));
-        return "Time off requested successfully for " + fullName + " from " + startOn + " to " + finishOn;
+        timeOffClient.requestLeave(new LeaveRequest(employeeId, startOn, finishOn, leaveTypeId, halfDay));
+        return "Time off requested successfully from " + startOn + " to " + finishOn;
     }
 
     @McpTool(name = "get_leave_types", description = "Returns the list of available leave types.")
@@ -96,10 +88,4 @@ public class TimeOffTools {
         return "Time off with ID " + leaveId + " has been deleted successfully.";
     }
 
-    private Employee getEmployee(String fullName) {
-        return employeesClient.getEmployees().stream()
-                .filter(e -> fullName.equalsIgnoreCase(e.fullName()))
-                .findFirst()
-                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with name: " + fullName));
-    }
 }
