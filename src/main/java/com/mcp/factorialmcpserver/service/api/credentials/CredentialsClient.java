@@ -1,6 +1,5 @@
 package com.mcp.factorialmcpserver.service.api.credentials;
 
-import com.mcp.factorialmcpserver.model.Employee;
 import com.mcp.factorialmcpserver.model.EmployeeCredentials;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
@@ -13,7 +12,6 @@ import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class CredentialsClient {

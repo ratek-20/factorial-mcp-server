@@ -4,7 +4,6 @@ import com.mcp.factorialmcpserver.model.AllowanceStats;
 import com.mcp.factorialmcpserver.model.HalfDay;
 import com.mcp.factorialmcpserver.model.Leave;
 import com.mcp.factorialmcpserver.model.LeaveType;
-import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.TimeOffClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.UpdateLeaveRequest;
@@ -19,12 +18,10 @@ import java.util.List;
 public class TimeOffTools {
 
     private final TimeOffClient timeOffClient;
-    private final EmployeesClient employeesClient;
 
     @Autowired
-    public TimeOffTools(TimeOffClient timeOffClient, EmployeesClient employeesClient) {
+    public TimeOffTools(TimeOffClient timeOffClient) {
         this.timeOffClient = timeOffClient;
-        this.employeesClient = employeesClient;
     }
 
     @McpTool(name = "get_available_vacation_days", description = "Returns the available vacation days for the current user.")
