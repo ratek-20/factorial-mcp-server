@@ -2,7 +2,7 @@ package com.mcp.factorialmcpserver.service.api.credentials;
 
 import com.mcp.factorialmcpserver.model.EmployeeCredentials;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
-import com.mcp.factorialmcpserver.service.api.configuration.GenericApiResponse;
+import com.mcp.factorialmcpserver.service.api.configuration.ApiPaginatedResponse;
 import com.mcp.factorialmcpserver.service.exception.CurrentEmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ public class CredentialsClient {
 
     public EmployeeCredentials getCurrentEmployee() {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
-        final GenericApiResponse<List<EmployeeCredentials>> response = baseClient.get()
+        final ApiPaginatedResponse<List<EmployeeCredentials>> response = baseClient.get()
                 .uri(CREDENTIALS_PATH)
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 //.headers(headers -> headers.setBearerAuth(accessToken))

@@ -9,5 +9,5 @@ public record Leave(
         @JsonProperty("finish_on") String finishOn,
         Boolean approved,
         @JsonProperty("employee_full_name") String employeeFullName,
-        @JsonProperty(value = "half_day", defaultValue = "full_day") String partOfTheDay
+        @JsonProperty("half_day") String halfDay
 ) {}

@@ -12,7 +12,6 @@ import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -59,8 +58,7 @@ public class TimeOffTools {
 
     @McpTool(name = "read_time_offs", description = "Returns the list of time offs for the given employee.")
     public List<Leave> readTimeOffs(Long employeeId) {
-        final String from = LocalDate.now().minusYears(1).toString(); // do not fetch time offs older than 1 year
-        return timeOffClient.getLeaves(employeeId, from);
+        return timeOffClient.getLeaves(employeeId);
     }
 
     @McpTool(name = "approve_time_off", description = "Approves a time off request.")
