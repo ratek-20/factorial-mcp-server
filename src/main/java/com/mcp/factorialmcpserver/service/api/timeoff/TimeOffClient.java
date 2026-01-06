@@ -67,12 +67,16 @@ public class TimeOffClient {
                 .toBodilessEntity();
     }
 
-    public List<Leave> getLeaves() {
+    public List<Leave> getLeaves(Long employeeId, String from) {
         // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
         final String includeDeletedQueryParam = "include_deleted_leaves";
+        final String employeeIdsParam = "employee_ids[]";
+        final String fromParam = "from";
         final GenericApiResponse<List<Leave>> response = baseClient.get()
                 .uri(uriBuilder -> uriBuilder.path(COMMON_ROOT + LEAVES_PATH)
                         .queryParam(includeDeletedQueryParam, false)
+                        .queryParam(employeeIdsParam, employeeId)
+                        .queryParam(fromParam, from)
                         .build())
                 .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
                 //.headers(headers -> headers.setBearerAuth(accessToken))
