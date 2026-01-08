@@ -1,6 +1,6 @@
 package com.mcp.factorialmcpserver.service.api.authorization;
 
-import com.mcp.factorialmcpserver.model.auth.OauthToken;
+import com.mcp.factorialmcpserver.model.auth.OAuthToken;
 import com.mcp.factorialmcpserver.service.api.authorization.mapper.TokenMapper;
 import com.mcp.factorialmcpserver.service.api.authorization.request.RefreshTokenRequest;
 import com.mcp.factorialmcpserver.service.api.authorization.request.RequestTokenRequest;
@@ -35,7 +35,7 @@ public class AuthClient {
         this.redirectUri = redirectUri;
     }
 
-    public OauthToken requestToken(String authCode) {
+    public OAuthToken requestToken(String authCode) {
         final RequestTokenRequest request = new RequestTokenRequest(OAUTH2_APPLICATION_ID, OAUTH2_APPLICATION_SECRET, authCode, AUTHORIZATION_CODE_GRANT_TYPE, redirectUri);
         final OauthResponse response = baseClient.post()
                 .uri(BASE_PATH)
@@ -46,7 +46,7 @@ public class AuthClient {
         return tokenMapper.map(response);
     }
 
-    public OauthToken refreshToken(String refreshToken) {
+    public OAuthToken refreshToken(String refreshToken) {
         final RefreshTokenRequest request = new RefreshTokenRequest(OAUTH2_APPLICATION_ID, OAUTH2_APPLICATION_SECRET, refreshToken, REFRESH_TOKEN_GRANT_TYPE);
         final OauthResponse response = baseClient.post()
                 .uri(BASE_PATH)
