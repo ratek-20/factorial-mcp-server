@@ -2,6 +2,7 @@ package com.mcp.factorialmcpserver.service.api.authorization;
 
 import com.mcp.factorialmcpserver.model.auth.OauthToken;
 import com.mcp.factorialmcpserver.service.api.authorization.request.AuthUrlFactory;
+import com.mcp.factorialmcpserver.service.exception.AuthenticationRequiredException;
 import com.mcp.factorialmcpserver.service.exception.BrowserException;
 import com.mcp.factorialmcpserver.service.exception.OAuthStateMismatchException;
 import org.slf4j.Logger;
@@ -37,13 +38,19 @@ public class AuthManager {
 
     public String getValidAccessToken() {
         final OauthToken oauthToken = oauthTokenReference.get();
-        if (Objects.nonNull(oauthToken) && !oauthToken.isAccessTokenExpired()) {
-            return oauthToken.getAccessToken();
+        if (Objects.isNull(oauthToken)) {
+            throw new AuthenticationRequiredException("Missing");
         }
-        // TODO: refresh process
-        startInteractiveLogin();
-        final OauthToken newOauthToken = waitingLoginReference.get().join();
-        return newOauthToken.getAccessToken();
+        if (oauthToken.isAccessTokenExpired()) {
+            try {
+                final OauthToken refurbishedToken = authClient.refreshToken(oauthToken.refreshToken());
+                oauthTokenReference.set(refurbishedToken);
+            } catch (Exception e) {
+                log.error("Unable to refresh token", e);
+                throw new AuthenticationRequiredException("Expired");
+            }
+        }
+        return oauthToken.getAccessToken();
     }
 
     private void startInteractiveLogin() {
@@ -86,7 +93,7 @@ public class AuthManager {
             return;
         }
         try {
-            final OauthToken oauthToken = authClient.getOauthToken(authCode);
+            final OauthToken oauthToken = authClient.requestToken(authCode);
             oauthTokenReference.set(oauthToken);
             waitingLoginReference.get().complete(oauthToken);
         } catch (Exception e) {
