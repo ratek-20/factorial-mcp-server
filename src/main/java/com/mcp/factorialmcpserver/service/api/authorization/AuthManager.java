@@ -1,10 +1,12 @@
 package com.mcp.factorialmcpserver.service.api.authorization;
 
+import com.mcp.factorialmcpserver.model.auth.AccessToken;
 import com.mcp.factorialmcpserver.model.auth.InteractiveAuthorizationResult;
 import com.mcp.factorialmcpserver.model.auth.OAuthToken;
 import com.mcp.factorialmcpserver.service.api.authorization.request.AuthUrlFactory;
 import com.mcp.factorialmcpserver.service.exception.AuthorizationRequiredException;
 import com.mcp.factorialmcpserver.service.exception.OAuthStateMismatchException;
+import com.mcp.factorialmcpserver.store.OAuthTokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.net.URI;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,6 +27,7 @@ public class AuthManager {
 
     private final AuthClient authClient;
     private final AuthUrlFactory authUrlFactory;
+    private final OAuthTokenStore tokenStore;
 
     private final AtomicReference<OAuthToken> oauthTokenReference = new AtomicReference<>();
     private final AtomicReference<String> stateReference = new AtomicReference<>();
@@ -30,9 +35,10 @@ public class AuthManager {
     private static final Logger log = LoggerFactory.getLogger(AuthManager.class);
 
     @Autowired
-    public AuthManager(AuthClient authClient, AuthUrlFactory authUrlFactory) {
+    public AuthManager(AuthClient authClient, AuthUrlFactory authUrlFactory, OAuthTokenStore tokenStore) {
         this.authClient = authClient;
         this.authUrlFactory = authUrlFactory;
+        this.tokenStore = tokenStore;
     }
 
     public String getValidAccessToken() {
@@ -43,7 +49,8 @@ public class AuthManager {
         if (oauthToken.isAccessTokenExpired()) {
             try {
                 final OAuthToken refurbishedToken = authClient.refreshToken(oauthToken.refreshToken());
-                oauthTokenReference.set(refurbishedToken);
+                setOAuthToken(refurbishedToken);
+                tokenStore.save(refurbishedToken);
                 return refurbishedToken.getAccessToken();
             } catch (Exception e) {
                 log.error("Unable to refresh token", e);
@@ -51,6 +58,10 @@ public class AuthManager {
             }
         }
         return oauthToken.getAccessToken();
+    }
+
+    public void setOAuthToken(OAuthToken oauthToken) {
+        oauthTokenReference.set(oauthToken);
     }
 
     /**
@@ -101,7 +112,8 @@ public class AuthManager {
             throw new OAuthStateMismatchException("Invalid state detected during OAuth2 authorization.");
         }
         final OAuthToken oauthToken = authClient.requestToken(authCode);
-        oauthTokenReference.set(oauthToken);
+        setOAuthToken(oauthToken);
+        tokenStore.save(oauthToken);
     }
 
 }

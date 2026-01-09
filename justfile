@@ -9,11 +9,12 @@ view-image:
     docker images | grep {{APP}}
 
 run: # detached mode
-    docker run -d -p {{PORT}}:7000 --name {{APP}} {{APP}}
+    docker run -d -p {{PORT}}:7000 -v ~/.cache/{{APP}}:/app/data --name {{APP}} {{APP}}
 
 debug:
     docker run -d -p {{PORT}}:7000 -p 5005:5005 \
         -e JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" \
+        -v ~/.cache/{{APP}}:/app/data \
         --name {{APP}} {{APP}}
 
 view-container:

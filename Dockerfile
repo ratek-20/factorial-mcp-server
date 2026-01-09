@@ -4,7 +4,13 @@ LABEL authors="ratek20"
 
 WORKDIR /app
 
-# JVM tuning base per container
+RUN mkdir -p logs && chown -R 1000:1000 logs
+RUN mkdir -p data && chown -R 1000:1000 data
+
+VOLUME ["data"]
+
+USER 1000:1000
+
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
 
 COPY target/factorial-mcp-server.jar factorial-mcp-server.jar
