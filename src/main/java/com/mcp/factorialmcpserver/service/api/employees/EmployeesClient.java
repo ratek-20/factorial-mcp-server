@@ -26,9 +26,6 @@ public class EmployeesClient {
     private static final String ONLY_MANAGERS = "only_managers";
     private static final String FULL_TEXT_NAME = "full_text_name";
 
-    @Value( "${factorial-api.api-key}")
-    private String apiKey; // TODO: remove when oauth flow is available
-
     @Autowired
     public EmployeesClient(RestClient baseClient, AuthManager authManager) {
         this.baseClient = baseClient;
@@ -36,15 +33,14 @@ public class EmployeesClient {
     }
 
     public Employee getEmployee(String name) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         final ApiPaginatedResponse<List<Employee>> response = baseClient.get()
                 .uri(uriBuilder -> uriBuilder.path(BASE_PATH)
                         .queryParam(ONLY_ACTIVE, true)
                         .queryParam(ONLY_MANAGERS, false)
                         .queryParam(FULL_TEXT_NAME, name)
                         .build())
-                //.headers(headers -> headers.setBearerAuth(accessToken))
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
         if (Objects.isNull(response) || Objects.isNull(response.data())) {

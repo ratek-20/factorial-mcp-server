@@ -28,9 +28,6 @@ public class TimeOffClient {
     private static final String COMMON_ROOT = "/resources/timeoff";
     private static final String LEAVES_PATH = "/leaves";
 
-    @Value("${factorial-api.api-key}")
-    private String apiKey; // TODO: remove when oauth flow is available
-
     @Autowired
     public TimeOffClient(RestClient baseClient, AuthManager authManager) {
         this.baseClient = baseClient;
@@ -38,7 +35,7 @@ public class TimeOffClient {
     }
 
     public List<AllowanceStats> getAllowanceStats(Long employeeId) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         final String allowanceStatsPath = "/allowance_stats";
         final String employeeIdsParam = "employee_ids[]";
         final ApiPaginatedResponse<List<AllowanceStats>> response = baseClient.get()
@@ -46,8 +43,7 @@ public class TimeOffClient {
                         .queryParam(employeeIdsParam, employeeId)
                         .build()
                 )
-                //.headers(headers -> headers.setBearerAuth(accessToken))
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
         if (Objects.isNull(response)) {
@@ -58,18 +54,17 @@ public class TimeOffClient {
     }
 
     public void requestLeave(LeaveRequest request) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         baseClient.post()
                 .uri(COMMON_ROOT + LEAVES_PATH)
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .body(request)
                 .retrieve()
                 .toBodilessEntity();
     }
 
     public List<Leave> getLeaves(Long employeeId) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         final String includeDeletedQueryParam = "include_deleted_leaves";
         final String employeeIdsParam = "employee_ids[]";
         final String fromParam = "from";
@@ -80,8 +75,7 @@ public class TimeOffClient {
                         .queryParam(employeeIdsParam, employeeId)
                         .queryParam(fromParam, notOlderThanOneYear)
                         .build())
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
         if (Objects.isNull(response)) {
@@ -92,45 +86,41 @@ public class TimeOffClient {
     }
 
     public void approveLeave(Long id) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         final String approvePath = "/approve";
         baseClient.post()
                 .uri(COMMON_ROOT + LEAVES_PATH + approvePath)
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .body(new ApproveLeaveRequest(id))
                 .retrieve()
                 .toBodilessEntity();
     }
 
     public void updateLeave(Long id, UpdateLeaveRequest request) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         baseClient.put()
                 .uri(COMMON_ROOT + LEAVES_PATH + "/" + id)
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .body(request)
                 .retrieve()
                 .toBodilessEntity();
     }
 
     public void deleteLeave(Long id) {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         baseClient.delete()
                 .uri(COMMON_ROOT + LEAVES_PATH + "/" + id)
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .toBodilessEntity();
     }
 
     public List<LeaveType> getLeaveTypes() {
-        // final String accessToken = authManager.getValidAccessToken(); // TODO: enable when oauth flow is available
+        final String accessToken = authManager.getValidAccessToken();
         final String leaveTypesPath = "/leave_types";
         final ApiPaginatedResponse<List<LeaveType>> response = baseClient.get()
                 .uri(COMMON_ROOT + leaveTypesPath)
-                .header("x-api-key", apiKey) // TODO: remove when oauth flow is available
-                //.headers(headers -> headers.setBearerAuth(accessToken))
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
         if (Objects.isNull(response)) {
