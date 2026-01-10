@@ -1,9 +1,9 @@
 package com.mcp.factorialmcpserver.entrypoint.mcp;
 
-import com.mcp.factorialmcpserver.model.AllowanceStats;
-import com.mcp.factorialmcpserver.model.HalfDay;
-import com.mcp.factorialmcpserver.model.Leave;
-import com.mcp.factorialmcpserver.model.LeaveType;
+import com.mcp.factorialmcpserver.model.timeoff.AllowanceStats;
+import com.mcp.factorialmcpserver.model.timeoff.HalfDay;
+import com.mcp.factorialmcpserver.model.timeoff.Leave;
+import com.mcp.factorialmcpserver.model.timeoff.LeaveType;
 import com.mcp.factorialmcpserver.service.api.timeoff.TimeOffClient;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.UpdateLeaveRequest;

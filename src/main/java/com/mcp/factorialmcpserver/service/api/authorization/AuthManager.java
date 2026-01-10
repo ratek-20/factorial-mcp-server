@@ -1,7 +1,7 @@
 package com.mcp.factorialmcpserver.service.api.authorization;
 
-import com.mcp.factorialmcpserver.model.auth.InteractiveAuthorizationResult;
-import com.mcp.factorialmcpserver.model.auth.OAuthToken;
+import com.mcp.factorialmcpserver.model.authorization.InteractiveAuthorizationResult;
+import com.mcp.factorialmcpserver.model.authorization.OAuthToken;
 import com.mcp.factorialmcpserver.service.api.authorization.request.AuthUrlFactory;
 import com.mcp.factorialmcpserver.service.exception.AuthorizationRequiredException;
 import com.mcp.factorialmcpserver.service.exception.OAuthStateMismatchException;

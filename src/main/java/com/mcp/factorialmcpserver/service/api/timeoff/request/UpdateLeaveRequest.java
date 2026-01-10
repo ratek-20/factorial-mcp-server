@@ -1,7 +1,7 @@
 package com.mcp.factorialmcpserver.service.api.timeoff.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mcp.factorialmcpserver.model.HalfDay;
+import com.mcp.factorialmcpserver.model.timeoff.HalfDay;
 
 public record UpdateLeaveRequest(
     Long id,

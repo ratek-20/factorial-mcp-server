@@ -1,8 +1,8 @@
 package com.mcp.factorialmcpserver.service.api.timeoff;
 
-import com.mcp.factorialmcpserver.model.AllowanceStats;
-import com.mcp.factorialmcpserver.model.Leave;
-import com.mcp.factorialmcpserver.model.LeaveType;
+import com.mcp.factorialmcpserver.model.timeoff.AllowanceStats;
+import com.mcp.factorialmcpserver.model.timeoff.Leave;
+import com.mcp.factorialmcpserver.model.timeoff.LeaveType;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.ApiPaginatedResponse;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.ApproveLeaveRequest;

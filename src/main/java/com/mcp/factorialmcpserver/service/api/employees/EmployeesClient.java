@@ -1,6 +1,6 @@
 package com.mcp.factorialmcpserver.service.api.employees;
 
-import com.mcp.factorialmcpserver.model.Employee;
+import com.mcp.factorialmcpserver.model.employees.Employee;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.ApiPaginatedResponse;
 import com.mcp.factorialmcpserver.service.exception.EmployeeNotFoundException;

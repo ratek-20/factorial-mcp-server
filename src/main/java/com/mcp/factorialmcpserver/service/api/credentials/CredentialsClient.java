@@ -1,6 +1,6 @@
 package com.mcp.factorialmcpserver.service.api.credentials;
 
-import com.mcp.factorialmcpserver.model.EmployeeCredentials;
+import com.mcp.factorialmcpserver.model.credentials.EmployeeCredentials;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.ApiPaginatedResponse;
 import com.mcp.factorialmcpserver.service.exception.CurrentEmployeeNotFoundException;

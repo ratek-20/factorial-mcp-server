@@ -1,4 +1,4 @@
-package com.mcp.factorialmcpserver.model;
+package com.mcp.factorialmcpserver.model.timeoff;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

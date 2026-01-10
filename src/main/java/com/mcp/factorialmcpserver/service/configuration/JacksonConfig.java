@@ -1,4 +1,4 @@
-package com.mcp.factorialmcpserver.service.api.configuration;
+package com.mcp.factorialmcpserver.service.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

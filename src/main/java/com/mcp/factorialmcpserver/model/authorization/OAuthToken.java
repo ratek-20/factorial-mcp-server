@@ -1,4 +1,4 @@
-package com.mcp.factorialmcpserver.model.auth;
+package com.mcp.factorialmcpserver.model.authorization;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

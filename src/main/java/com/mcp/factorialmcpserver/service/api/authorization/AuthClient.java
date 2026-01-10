@@ -1,6 +1,6 @@
 package com.mcp.factorialmcpserver.service.api.authorization;
 
-import com.mcp.factorialmcpserver.model.auth.OAuthToken;
+import com.mcp.factorialmcpserver.model.authorization.OAuthToken;
 import com.mcp.factorialmcpserver.service.api.authorization.mapper.TokenMapper;
 import com.mcp.factorialmcpserver.service.api.authorization.request.RefreshTokenRequest;
 import com.mcp.factorialmcpserver.service.api.authorization.request.RequestTokenRequest;

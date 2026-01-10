@@ -1,7 +1,7 @@
 package com.mcp.factorialmcpserver.entrypoint.mcp;
 
-import com.mcp.factorialmcpserver.model.Employee;
-import com.mcp.factorialmcpserver.model.EmployeeCredentials;
+import com.mcp.factorialmcpserver.model.employees.Employee;
+import com.mcp.factorialmcpserver.model.credentials.EmployeeCredentials;
 import com.mcp.factorialmcpserver.service.api.credentials.CredentialsClient;
 import com.mcp.factorialmcpserver.service.api.employees.EmployeesClient;
 import org.springaicommunity.mcp.annotation.McpTool;

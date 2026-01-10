@@ -1,8 +1,8 @@
 package com.mcp.factorialmcpserver.entrypoint.mcp;
 
-import com.mcp.factorialmcpserver.model.auth.AuthResult;
-import com.mcp.factorialmcpserver.model.auth.AuthStatus;
-import com.mcp.factorialmcpserver.model.auth.InteractiveAuthorizationResult;
+import com.mcp.factorialmcpserver.model.authorization.AuthResult;
+import com.mcp.factorialmcpserver.model.authorization.AuthStatus;
+import com.mcp.factorialmcpserver.model.authorization.InteractiveAuthorizationResult;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import org.springaicommunity.mcp.annotation.McpTool;
 import org.springframework.beans.factory.annotation.Autowired;

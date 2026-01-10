@@ -1,4 +1,4 @@
-package com.mcp.factorialmcpserver.model;
+package com.mcp.factorialmcpserver.model.credentials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

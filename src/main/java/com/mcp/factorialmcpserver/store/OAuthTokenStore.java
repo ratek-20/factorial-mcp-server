@@ -1,7 +1,7 @@
 package com.mcp.factorialmcpserver.store;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mcp.factorialmcpserver.model.auth.OAuthToken;
+import com.mcp.factorialmcpserver.model.authorization.OAuthToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

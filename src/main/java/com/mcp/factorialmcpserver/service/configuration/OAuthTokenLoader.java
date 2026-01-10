@@ -1,4 +1,4 @@
-package com.mcp.factorialmcpserver;
+package com.mcp.factorialmcpserver.service.configuration;
 
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.store.OAuthTokenStore;

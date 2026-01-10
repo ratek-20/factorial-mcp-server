@@ -1,7 +1,7 @@
 package com.mcp.factorialmcpserver.service.api.authorization.mapper;
 
-import com.mcp.factorialmcpserver.model.auth.AccessToken;
-import com.mcp.factorialmcpserver.model.auth.OAuthToken;
+import com.mcp.factorialmcpserver.model.authorization.AccessToken;
+import com.mcp.factorialmcpserver.model.authorization.OAuthToken;
 import com.mcp.factorialmcpserver.service.api.authorization.response.OauthResponse;
 import org.springframework.stereotype.Component;
 
