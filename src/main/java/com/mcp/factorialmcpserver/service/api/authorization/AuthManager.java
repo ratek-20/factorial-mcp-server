@@ -51,13 +51,13 @@ public class AuthManager {
                 final OAuthToken refurbishedToken = authClient.refreshToken(oauthToken.refreshToken());
                 setOAuthToken(refurbishedToken);
                 tokenStore.save(refurbishedToken);
-                return refurbishedToken.getAccessToken();
+                return refurbishedToken.accessTokenValue();
             } catch (Exception e) {
                 log.error("Unable to refresh token", e);
                 throw new AuthorizationRequiredException("Expired");
             }
         }
-        return oauthToken.getAccessToken();
+        return oauthToken.accessTokenValue();
     }
 
     public void setOAuthToken(OAuthToken oauthToken) {
