@@ -17,26 +17,36 @@ public class AuthClient {
     private final RestClient baseClient;
     private final TokenMapper tokenMapper;
     private final String redirectUri;
+    private final String oauth2ApplicationId;  // env var
+    private final String oauth2ApplicationSecret;  // env var
 
     private static final String BASE_PATH = "/oauth2/token";
 
-    private static final String OAUTH2_APPLICATION_ID = ""; // paste your client id here
-    private static final String OAUTH2_APPLICATION_SECRET = ""; // paste your client secret here
     private static final String AUTHORIZATION_CODE_GRANT_TYPE = "authorization_code";
     private static final String REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
     @Autowired
     public AuthClient(RestClient baseClient,
                       TokenMapper tokenMapper,
-                      @Value("${factorial-api.redirect-uri}") String redirectUri
+                      @Value("${factorial-api.redirect-uri}") String redirectUri,
+                      @Value("${OAUTH2_APPLICATION_ID}") String oauth2ApplicationId,
+                      @Value("${OAUTH2_APPLICATION_SECRET}") String oauth2ApplicationSecret
     ) {
         this.baseClient = baseClient;
         this.tokenMapper = tokenMapper;
         this.redirectUri = redirectUri;
+        this.oauth2ApplicationId = oauth2ApplicationId;
+        this.oauth2ApplicationSecret = oauth2ApplicationSecret;
     }
 
     public OAuthToken requestToken(String authCode) {
-        final RequestTokenRequest request = new RequestTokenRequest(OAUTH2_APPLICATION_ID, OAUTH2_APPLICATION_SECRET, authCode, AUTHORIZATION_CODE_GRANT_TYPE, redirectUri);
+        final RequestTokenRequest request = new RequestTokenRequest(
+                oauth2ApplicationId,
+                oauth2ApplicationSecret,
+                authCode,
+                AUTHORIZATION_CODE_GRANT_TYPE,
+                redirectUri
+        );
         final OauthResponse response = baseClient.post()
                 .uri(BASE_PATH)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -47,7 +57,12 @@ public class AuthClient {
     }
 
     public OAuthToken refreshToken(String refreshToken) {
-        final RefreshTokenRequest request = new RefreshTokenRequest(OAUTH2_APPLICATION_ID, OAUTH2_APPLICATION_SECRET, refreshToken, REFRESH_TOKEN_GRANT_TYPE);
+        final RefreshTokenRequest request = new RefreshTokenRequest(
+                oauth2ApplicationId,
+                oauth2ApplicationSecret,
+                refreshToken,
+                REFRESH_TOKEN_GRANT_TYPE
+        );
         final OauthResponse response = baseClient.post()
                 .uri(BASE_PATH)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)

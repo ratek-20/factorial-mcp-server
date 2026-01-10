@@ -12,6 +12,7 @@ public class AuthUrlFactory {
 
     private final String redirectUri;
     private final String hostname;
+    private final String oauth2ApplicationId; // env var
 
     private static final String PROTOCOL = "https";
     private static final String PATH = "/oauth/authorize";
@@ -22,14 +23,15 @@ public class AuthUrlFactory {
     private static final String RESPONSE_TYPE = "response_type";
     private static final String STATE = "state";
 
-    private static final String OAUTH2_APPLICATION_ID = ""; // paste your app id here
     private static final String CODE = "code";
 
     @Autowired
     public AuthUrlFactory(@Value("${factorial-api.redirect-uri}") String redirectUri,
-                          @Value("${factorial-api.hostname}") String hostname) {
+                          @Value("${factorial-api.hostname}") String hostname,
+                          @Value("${OAUTH2_APPLICATION_ID}") String oauth2ApplicationId) {
         this.redirectUri = redirectUri;
         this.hostname = hostname;
+        this.oauth2ApplicationId = oauth2ApplicationId;
     }
 
     public URI create(String state) {
@@ -37,7 +39,7 @@ public class AuthUrlFactory {
                 .scheme(PROTOCOL)
                 .host(hostname)
                 .path(PATH)
-                .queryParam(CLIENT_ID, OAUTH2_APPLICATION_ID)
+                .queryParam(CLIENT_ID, oauth2ApplicationId)
                 .queryParam(REDIRECT_URI, redirectUri)
                 .queryParam(RESPONSE_TYPE, CODE)
                 .queryParam(STATE, state)

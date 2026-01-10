@@ -1,6 +1,5 @@
 package com.mcp.factorialmcpserver.service.api.authorization;
 
-import com.mcp.factorialmcpserver.model.auth.AccessToken;
 import com.mcp.factorialmcpserver.model.auth.InteractiveAuthorizationResult;
 import com.mcp.factorialmcpserver.model.auth.OAuthToken;
 import com.mcp.factorialmcpserver.service.api.authorization.request.AuthUrlFactory;
@@ -16,8 +15,6 @@ import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.net.URI;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
