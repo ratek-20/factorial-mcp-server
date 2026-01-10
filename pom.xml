@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.mcp</groupId>
 	<artifactId>factorial-mcp-server</artifactId>
-	<version>0.7.0</version>
+	<version>0.7.0-SNAPSHOT</version>
 	<name>factorial-mcp-server</name>
 	<description>Factorial Mcp Server</description>
 	<url/>
