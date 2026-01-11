@@ -35,7 +35,7 @@ kill-container:
     docker rm {{APP}} || true
 
 logs:
-    docker exec -it {{APP}} sh -c 'tail -n 200 -f /app/logs/app.log'
+    docker exec -it {{APP}} sh -c 'tail -n 200 -f /app/data/app.log'
 
 clear-cache:
     docker volume rm factorial-mcp-server_cache
