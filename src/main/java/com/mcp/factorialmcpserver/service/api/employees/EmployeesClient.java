@@ -5,19 +5,21 @@ import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import com.mcp.factorialmcpserver.service.api.configuration.ApiPaginatedResponse;
 import com.mcp.factorialmcpserver.service.exception.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class EmployeesClient {
 
     private final RestClient baseClient;
     private final AuthManager authManager;
+
+    private final ConcurrentHashMap<String, Employee> employeesCache = new ConcurrentHashMap<>();
 
     private static final String BASE_PATH = "/resources/employees/employees";
 
@@ -33,6 +35,10 @@ public class EmployeesClient {
     }
 
     public Employee getEmployee(String name) {
+        return employeesCache.computeIfAbsent(name, this::getEmployeeFromApi);
+    }
+
+    private Employee getEmployeeFromApi(String name) {
         final String accessToken = authManager.getValidAccessToken();
         final ApiPaginatedResponse<List<Employee>> response = baseClient.get()
                 .uri(uriBuilder -> uriBuilder.path(BASE_PATH)

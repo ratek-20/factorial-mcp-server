@@ -19,6 +19,8 @@ public class CredentialsClient {
     private final AuthManager authManager;
     private static final String CREDENTIALS_PATH = "/resources/api_public/credentials";
 
+    private volatile EmployeeCredentials cachedCurrentEmployee;
+
     @Autowired
     public CredentialsClient(RestClient baseClient, AuthManager authManager) {
         this.baseClient = baseClient;
@@ -26,6 +28,18 @@ public class CredentialsClient {
     }
 
     public EmployeeCredentials getCurrentEmployee() {
+        if (Objects.nonNull(cachedCurrentEmployee)) {
+            return cachedCurrentEmployee;
+        }
+        synchronized (this) {
+            if (Objects.isNull(cachedCurrentEmployee)) {
+                cachedCurrentEmployee = getCurrentEmployeeFromApi();
+            }
+            return cachedCurrentEmployee;
+        }
+    }
+
+    private EmployeeCredentials getCurrentEmployeeFromApi() {
         final String accessToken = authManager.getValidAccessToken();
         final ApiPaginatedResponse<List<EmployeeCredentials>> response = baseClient.get()
                 .uri(CREDENTIALS_PATH)

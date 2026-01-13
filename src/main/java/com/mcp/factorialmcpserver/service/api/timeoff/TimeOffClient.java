@@ -9,7 +9,6 @@ import com.mcp.factorialmcpserver.service.api.timeoff.request.ApproveLeaveReques
 import com.mcp.factorialmcpserver.service.api.timeoff.request.LeaveRequest;
 import com.mcp.factorialmcpserver.service.api.timeoff.request.UpdateLeaveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -24,6 +23,8 @@ public class TimeOffClient {
 
     private final RestClient baseClient;
     private final AuthManager authManager;
+
+    private volatile List<LeaveType> cachedLeaveTypes;
 
     private static final String COMMON_ROOT = "/resources/timeoff";
     private static final String LEAVES_PATH = "/leaves";
@@ -116,6 +117,18 @@ public class TimeOffClient {
     }
 
     public List<LeaveType> getLeaveTypes() {
+        if (Objects.nonNull(cachedLeaveTypes)) {
+            return cachedLeaveTypes;
+        }
+        synchronized (this) {
+            if (Objects.isNull(cachedLeaveTypes)) {
+                cachedLeaveTypes = getLeaveTypesFromApi();
+            }
+            return cachedLeaveTypes;
+        }
+    }
+
+    private List<LeaveType> getLeaveTypesFromApi() {
         final String accessToken = authManager.getValidAccessToken();
         final String leaveTypesPath = "/leave_types";
         final ApiPaginatedResponse<List<LeaveType>> response = baseClient.get()
