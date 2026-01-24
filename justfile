@@ -5,6 +5,9 @@ build: # unset java home to to prevent unwanted env var injection from the IDE, 
     env -u JAVA_HOME mvn clean package -DskipTests
     docker build -t {{APP}} .
 
+test:
+    env -u JAVA_HOME mvn clean test
+
 view-image:
     docker images | grep {{APP}}
 
