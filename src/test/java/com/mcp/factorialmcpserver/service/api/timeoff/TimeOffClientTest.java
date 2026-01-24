@@ -233,17 +233,23 @@ class TimeOffClientTest {
 
         when(baseClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri("/resources/timeoff/leave_types")).thenReturn(requestHeadersSpec);
-        when(requestHeadersSpec.headers(any())).thenReturn(requestHeadersSpec);
+
+        ArgumentCaptor<Consumer<HttpHeaders>> headersCaptor = ArgumentCaptor.forClass(Consumer.class);
+        when(requestHeadersSpec.headers(headersCaptor.capture())).thenReturn(requestHeadersSpec);
+
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
         when(responseSpec.body(any(ParameterizedTypeReference.class))).thenReturn(response);
 
         // First call
-        List<LeaveType> result1 = timeOffClient.getLeaveTypes();
+        List<LeaveType> leaveTypes = timeOffClient.getLeaveTypes();
         // Second call
-        List<LeaveType> result2 = timeOffClient.getLeaveTypes();
+        List<LeaveType> cachedLeaveTypes = timeOffClient.getLeaveTypes();
 
-        assertEquals(expectedTypes, result1);
-        assertEquals(expectedTypes, result2);
+        headersCaptor.getValue().accept(httpHeaders);
+        verify(httpHeaders).setBearerAuth(ACCESS_TOKEN);
+
+        assertEquals(expectedTypes, leaveTypes);
+        assertEquals(expectedTypes, cachedLeaveTypes);
         
         // Verify API called only once
         verify(baseClient, times(1)).get();
@@ -283,8 +289,8 @@ class TimeOffClientTest {
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
         when(responseSpec.body(any(ParameterizedTypeReference.class))).thenReturn(null);
 
-        List<LeaveType> result = timeOffClient.getLeaveTypes();
+        List<LeaveType> leaveTypes = timeOffClient.getLeaveTypes();
 
-        assertTrue(result.isEmpty());
+        assertTrue(leaveTypes.isEmpty());
     }
 }
