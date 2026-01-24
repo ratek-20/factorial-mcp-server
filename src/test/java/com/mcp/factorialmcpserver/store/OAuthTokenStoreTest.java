@@ -57,9 +57,9 @@ class OAuthTokenStoreTest {
     void itShouldReturnEmptyOptionalWhenFileDoesNotExist() {
         filesMockedStatic.when(() -> Files.exists(TOKEN_FILE_PATH)).thenReturn(false);
 
-        Optional<OAuthToken> result = oauthTokenStore.load();
+        Optional<OAuthToken> oauthToken = oauthTokenStore.load();
 
-        assertTrue(result.isEmpty());
+        assertTrue(oauthToken.isEmpty());
     }
 
     @Test
@@ -70,10 +70,10 @@ class OAuthTokenStoreTest {
         filesMockedStatic.when(() -> Files.readAllBytes(TOKEN_FILE_PATH)).thenReturn(tokenBytes);
         when(objectMapper.readValue(tokenBytes, OAuthToken.class)).thenReturn(token);
 
-        Optional<OAuthToken> result = oauthTokenStore.load();
+        Optional<OAuthToken> oauthToken = oauthTokenStore.load();
 
-        assertTrue(result.isPresent());
-        assertEquals(token, result.get());
+        assertTrue(oauthToken.isPresent());
+        assertEquals(token, oauthToken.get());
     }
 
     @Test
@@ -81,9 +81,9 @@ class OAuthTokenStoreTest {
         filesMockedStatic.when(() -> Files.exists(TOKEN_FILE_PATH)).thenReturn(true);
         filesMockedStatic.when(() -> Files.readAllBytes(TOKEN_FILE_PATH)).thenThrow(new IOException("Read error"));
 
-        Optional<OAuthToken> result = oauthTokenStore.load();
+        Optional<OAuthToken> oauthToken = oauthTokenStore.load();
 
-        assertTrue(result.isEmpty());
+        assertTrue(oauthToken.isEmpty());
     }
 
     @Test

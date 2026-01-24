@@ -62,7 +62,7 @@ class EmployeesClientTest {
         String employeeName = "John Doe";
         String accessToken = "access-token";
         Employee expectedEmployee = Instancio.create(Employee.class);
-        ApiPaginatedResponse<List<Employee>> response = new ApiPaginatedResponse<>(
+        ApiPaginatedResponse<List<Employee>> apiPaginatedResponse = new ApiPaginatedResponse<>(
                 List.of(expectedEmployee),
                 null
         );
@@ -77,7 +77,7 @@ class EmployeesClientTest {
         when(requestHeadersSpec.headers(headersCaptor.capture())).thenReturn(requestHeadersSpec);
 
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(response);
+        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(apiPaginatedResponse);
 
         Employee employee = employeesClient.getEmployee(employeeName);
 
@@ -106,7 +106,7 @@ class EmployeesClientTest {
         String employeeName = "John Doe";
         String accessToken = "access-token";
         Employee expectedEmployee = Instancio.create(Employee.class);
-        ApiPaginatedResponse<List<Employee>> response = new ApiPaginatedResponse<>(
+        ApiPaginatedResponse<List<Employee>> apiPaginatedResponse = new ApiPaginatedResponse<>(
                 List.of(expectedEmployee),
                 null
         );
@@ -116,7 +116,7 @@ class EmployeesClientTest {
         when(requestHeadersUriSpec.uri(any(Function.class))).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.headers(any())).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(response);
+        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(apiPaginatedResponse);
 
         // First call
         employeesClient.getEmployee(employeeName);
@@ -146,14 +146,14 @@ class EmployeesClientTest {
     @Test
     void itShouldThrowExceptionWhenApiResponseDataIsNull() {
         String employeeName = "Unknown";
-        ApiPaginatedResponse<List<Employee>> response = new ApiPaginatedResponse<>(null, null);
+        ApiPaginatedResponse<List<Employee>> apiPaginatedResponse = new ApiPaginatedResponse<>(null, null);
 
         when(authManager.getValidAccessToken()).thenReturn("token");
         when(baseClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(any(Function.class))).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.headers(any())).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(response);
+        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(apiPaginatedResponse);
 
         assertThrows(EmployeeNotFoundException.class, () -> employeesClient.getEmployee(employeeName));
     }
@@ -161,14 +161,14 @@ class EmployeesClientTest {
     @Test
     void itShouldThrowExceptionWhenApiResponseDataIsEmpty() {
         String employeeName = "Unknown";
-        ApiPaginatedResponse<List<Employee>> response = new ApiPaginatedResponse<>(Collections.emptyList(), null);
+        ApiPaginatedResponse<List<Employee>> apiPaginatedResponse = new ApiPaginatedResponse<>(Collections.emptyList(), null);
 
         when(authManager.getValidAccessToken()).thenReturn("token");
         when(baseClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(any(Function.class))).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.headers(any())).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(response);
+        when(responseSpec.body(eq(new ParameterizedTypeReference<ApiPaginatedResponse<List<Employee>>>() {}))).thenReturn(apiPaginatedResponse);
 
         assertThrows(EmployeeNotFoundException.class, () -> employeesClient.getEmployee(employeeName));
     }
