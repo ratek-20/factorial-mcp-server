@@ -100,7 +100,15 @@
 						</goals>
 						<configuration>
 							<excludes>
-								<exclude>com/mcp/factorialmcpserver/model/**</exclude>
+								<exclude>com/mcp/factorialmcpserver/model/credentials/**</exclude>
+								<exclude>com/mcp/factorialmcpserver/model/employees/**</exclude>
+								<exclude>com/mcp/factorialmcpserver/model/timeoff/**</exclude>
+								<exclude>com/mcp/factorialmcpserver/model/authorization/AuthResult.class</exclude>
+								<exclude>com/mcp/factorialmcpserver/model/authorization/AuthStatus.class</exclude>
+								<exclude>com/mcp/factorialmcpserver/model/authorization/InteractiveAuthorizationResult.class</exclude>
+								<exclude>com/mcp/factorialmcpserver/service/exception/**</exclude>
+								<exclude>**/*Request.class</exclude>
+								<exclude>**/*Response.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>
