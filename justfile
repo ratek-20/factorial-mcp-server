@@ -11,8 +11,8 @@ test:
 view-image:
     docker images | grep {{APP}}
 
-run: # detached mode
-    docker run -d \
+run:
+    docker run -i --rm \
         -p {{PORT}}:7000 \
         -e OAUTH2_APPLICATION_ID=oauth-app-id \
         -e OAUTH2_APPLICATION_SECRET=oauth-app-secret \
@@ -21,7 +21,7 @@ run: # detached mode
 # replace oauth env vars accoring to your actual app data
 
 debug:
-    docker run -d \
+    docker run -i --rm \
         -p {{PORT}}:7000 -p 5005:5005 \
         -e OAUTH2_APPLICATION_ID=oauth-app-id \
         -e OAUTH2_APPLICATION_SECRET=oauth-app-secret \
