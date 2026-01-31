@@ -29,6 +29,17 @@ debug:
         --name {{APP}} {{APP}}
 # replace oauth env vars accoring to your actual app data
 
+inspect:
+    npx @modelcontextprotocol/inspector -- \
+          docker run --rm -i \
+              -p 7000:7000 -p 5005:5005 \
+              -v factorial-mcp-server_cache:/app/data \
+              -e OAUTH2_APPLICATION_ID=oauth-app-id \
+              -e OAUTH2_APPLICATION_SECRET=oauth-app-secret \
+              -e JAVA_TOOL_OPTIONS=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005\" \
+              factorial-mcp-server:latest \
+              --name factorial-mcp-server
+
 view-container:
     docker ps -a | grep {{APP}}
 
