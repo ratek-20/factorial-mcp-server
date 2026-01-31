@@ -21,8 +21,8 @@ RUN jdeps \
   --class-path factorial-mcp-server.jar \
   factorial-mcp-server.jar > modules.txt
 
-# append modules not detected by jdeps
-RUN echo "java.naming,java.desktop,jdk.httpserver" > modules.base
+# append modules not detected by jdeps (agent only needed for debug, but I add it here anyway since its size is so small that I prefer avoid building a custom debug image)
+RUN echo "java.naming,java.desktop,jdk.httpserver,jdk.jdwp.agent" > modules.base
 RUN cat modules.base modules.jdeps \
   | tr ',' '\n' \
   | sed '/^\s*$/d' \
