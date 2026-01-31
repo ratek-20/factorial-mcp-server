@@ -1,8 +1,7 @@
 APP := "factorial-mcp-server"
 PORT := "7000"
 
-build: # unset java home to to prevent unwanted env var injection from the IDE, just use the java in the PATH
-    env -u JAVA_HOME mvn clean package -DskipTests
+build:
     docker build -t {{APP}} .
 
 test:
@@ -18,7 +17,7 @@ run:
         -e OAUTH2_APPLICATION_SECRET=oauth-app-secret \
         -v factorial-mcp-server_cache:/app/data \
         --name {{APP}} {{APP}}
-# replace oauth env vars accoring to your actual app data
+# replace oauth env vars according to your actual app data
 
 debug:
     docker run -i --rm \
