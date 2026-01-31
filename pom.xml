@@ -53,8 +53,8 @@
             <artifactId>spring-ai-starter-mcp-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
         </dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
