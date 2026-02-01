@@ -24,9 +24,11 @@ It runs on your local machine and exposes tools that AI agents like [Claude Code
 
 ## 🎬 Demo
 
-<!-- TODO: Add demo screenshots/videos here -->
+### Request Time Off
+![Request and Update Time Off](docs/screenshots/request-update-rimo-off.png)
 
-_Coming soon: Screenshots and videos demonstrating the server in action._
+### Approve Time Off
+![Approve Time Off](docs/screenshots/approve-time-off.png)
 
 ---
 
@@ -246,9 +248,7 @@ The first time your AI client attempts to use any of the server's tools, the OAu
 
 ### 🔧 Tool Invocation Flow
 
-<!-- TODO: Add architecture diagram here -->
-
-_Diagram placeholder: Tool invocation flow_
+![Tool UML Component Diagram](docs/diagrams/tool-uml-component.png)
 
 When an AI agent invokes a tool, the server:
 1. Receives the request via STDIO
@@ -263,9 +263,7 @@ When an AI agent invokes a tool, the server:
 
 ### 🔑 Authorization Architecture
 
-<!-- TODO: Add OAuth flow diagram here -->
-
-_Diagram placeholder: OAuth2 flow_
+![OAuth UML Sequence Diagram](docs/diagrams/oauth-uml-sequence.png)
 
 The server exposes **port 7000** with a minimal HTTP server that handles OAuth callbacks:
 
