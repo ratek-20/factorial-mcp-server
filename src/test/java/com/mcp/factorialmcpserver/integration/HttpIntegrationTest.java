@@ -3,7 +3,10 @@ package com.mcp.factorialmcpserver.integration;
 import com.mcp.factorialmcpserver.service.api.authorization.AuthManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.util.TestSocketUtils;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,21 +16,26 @@ import java.net.http.HttpResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, properties = {
-        "OAUTH2_APPLICATION_ID=dummy-id",
-        "OAUTH2_APPLICATION_SECRET=dummy-secret",
-        "oauth.server.host=localhost",
-        "oauth.server.port=7000",
-        "oauth.server.path=/oauth2-callback"
-})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class HttpIntegrationTest {
+
+    static int port;
+
+    @DynamicPropertySource
+    static void props(DynamicPropertyRegistry r) {
+        port = TestSocketUtils.findAvailableTcpPort();
+        r.add("oauth.server.port", () -> port);
+        r.add("oauth.server.host", () -> "localhost");
+        r.add("oauth.server.path", () -> "/oauth2-callback");
+        r.add("OAUTH2_APPLICATION_ID", () -> "dummy-id");
+        r.add("OAUTH2_APPLICATION_SECRET", () -> "dummy-secret");
+    }
 
     @MockitoBean
     private AuthManager authManager;
 
     @Test
     void itShouldHandleOAuthCallback() throws Exception {
-        int port = 7000;
         String code = "test-code";
         String state = "test-state";
         String url = "http://localhost:" + port + "/oauth2-callback?code=" + code + "&state=" + state;
