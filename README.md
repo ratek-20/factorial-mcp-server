@@ -178,47 +178,21 @@ The server exposes the following tools to AI agents:
    <details>
    <summary><strong>Claude Desktop/Code</strong></summary>
 
-   **Config path:**
-   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-   - Linux: `~/.config/Claude/claude_desktop_config.json`
-
-   ```json
-   {
-     "mcpServers": {
-       "mcp-factorial": {
-         "command": "docker",
-         "args": [
-           "run",
-           "-i",
-           "--rm",
-           "-p",
-           "7000:7000",
-           "-v",
-           "factorial-mcp-server_cache:/app/data",
-           "--env-file",
-           "<absolute-path-to-your-.env-file>",
-           "ghcr.io/ratek-20/factorial-mcp-server:latest",
-           "--transport",
-           "stdio"
-         ],
-         "timeout": 120000,
-         "trust": false,
-         "includeTools": [
-           "get_available_vacation_days",
-           "request_time_off",
-           "read_time_offs",
-           "approve_time_off",
-           "update_time_off",
-           "delete_time_off",
-           "get_leave_types",
-           "get_current_employee",
-           "get_employee",
-           "authorize"
-         ]
-       }
-     }
-   }
+   ```bash
+   claude mcp add --transport stdio mcp-factorial \
+     --command docker \
+     --arg run \
+     --arg -i \
+     --arg --rm \
+     --arg -p \
+     --arg 7000:7000 \
+     --arg -v \
+     --arg factorial-mcp-server_cache:/app/data \
+     --arg --env-file \
+     --arg <absolute-path-to-your-.env-file> \
+     --arg ghcr.io/ratek-20/factorial-mcp-server:latest \
+     --arg --transport \
+     --arg stdio
    ```
    </details>
 
@@ -237,11 +211,6 @@ The first time your AI client attempts to use any of the server's tools, the OAu
 3. Approve the authorization request
 4. You're all set!
 
-**After successful authorization:**
-- Your access token is stored in a Docker named volume (`factorial-mcp-server_cache`)
-- Even if you stop/restart the server, it will reload the token from persistent storage
-- You won't need to re-authorize unless the token expires or is revoked
-
 ---
 
 ## 🏗️ Architecture
@@ -257,7 +226,9 @@ When an AI agent invokes a tool, the server:
 4. Returns the formatted result back to the AI client
 
 **Caching Strategy:**
-- Only `GET` requests are cached (read operations)
+- Only `GET` requests that return static content with low probability of change are cached
+- Cached endpoints include: employee information (`get_employee`, `get_current_employee`) and leave types (`get_leave_types`)
+- Time-off requests (`read_time_offs`) are NOT cached, as they change frequently with new requests and approvals
 - Write operations (`POST`, `PUT`, `DELETE`) always hit the API
 - Cache is stored in-memory for the lifetime of the server process
 
