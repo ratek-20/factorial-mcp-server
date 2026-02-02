@@ -179,20 +179,12 @@ The server exposes the following tools to AI agents:
    <summary><strong>Claude Desktop/Code</strong></summary>
 
    ```bash
-   claude mcp add --transport stdio mcp-factorial \
-     --command docker \
-     --arg run \
-     --arg -i \
-     --arg --rm \
-     --arg -p \
-     --arg 7000:7000 \
-     --arg -v \
-     --arg factorial-mcp-server_cache:/app/data \
-     --arg --env-file \
-     --arg <absolute-path-to-your-.env-file> \
-     --arg ghcr.io/ratek-20/factorial-mcp-server:latest \
-     --arg --transport \
-     --arg stdio
+   claude mcp add --transport stdio mcp-factorial -- \
+     docker run -i --rm -p 7000:7000 \
+     -v factorial-mcp-server_cache:/app/data \
+     --env-file <absolute-path-to-your-.env-file> \
+     ghcr.io/ratek-20/factorial-mcp-server:latest \
+     --transport stdio
    ```
    </details>
 
