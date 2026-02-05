@@ -7,6 +7,8 @@
 [![Spring AI](https://img.shields.io/badge/spring--ai-1.1.2-green)](https://spring.io/projects/spring-ai)
 [![MCP](https://img.shields.io/badge/MCP-compatible-purple)](https://modelcontextprotocol.io/)
 
+🌐 **Website:** [https://ratek-20.github.io/factorial-mcp-server/](https://ratek-20.github.io/factorial-mcp-server/)
+
 ---
 
 ## 📖 What is This?
