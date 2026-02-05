@@ -27,10 +27,10 @@ It runs on your local machine and exposes tools that AI agents like [Claude Code
 ## 🎬 Demo
 
 ### Request Time Off
-![Request and Update Time Off](docs/screenshots/request-update-rimo-off.png)
+![Factorial MCP Server demo showing time-off request and update in Gemini CLI using natural language](docs/screenshots/request-update-rimo-off.png)
 
 ### Approve Time Off
-![Approve Time Off](docs/screenshots/approve-time-off.png)
+![Factorial MCP Server manager approving employee time-off request through Gemini CLI](docs/screenshots/approve-time-off.png)
 
 ---
 
