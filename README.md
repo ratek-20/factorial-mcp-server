@@ -26,7 +26,8 @@ It runs on your local machine and exposes tools that AI agents like [Claude Code
 
 ## 🎬 Demo
 
-### Demo
+In this demo, an employee uses Gemini CLI to request time off and then update the request — all in natural language. A manager then approves the request through the same conversational interface.
+
 ![Factorial MCP Server demo showing time-off operations in Gemini CLI using natural language](docs/gifs/time-off-operations_speed-1.5.gif)
 
 ---
