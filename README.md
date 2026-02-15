@@ -6,6 +6,7 @@
 [![Java](https://img.shields.io/badge/java-25-orange)](https://openjdk.org/)
 [![Spring AI](https://img.shields.io/badge/spring--ai-1.1.2-green)](https://spring.io/projects/spring-ai)
 [![MCP](https://img.shields.io/badge/MCP-compatible-purple)](https://modelcontextprotocol.io/)
+[![MCP Badge](https://lobehub.com/badge/mcp/ratek-20-factorial-mcp-server)](https://lobehub.com/mcp/ratek-20-factorial-mcp-server)
 
 🌐 **Website:** [https://ratek-20.github.io/factorial-mcp-server/](https://ratek-20.github.io/factorial-mcp-server/)
 
