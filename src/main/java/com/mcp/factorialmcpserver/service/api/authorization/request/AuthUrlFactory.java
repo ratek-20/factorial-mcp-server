@@ -28,7 +28,7 @@ public class AuthUrlFactory {
     @Autowired
     public AuthUrlFactory(@Value("${factorial-api.redirect-uri}") String redirectUri,
                           @Value("${factorial-api.hostname}") String hostname,
-                          @Value("${OAUTH2_APPLICATION_ID}") String oauth2ApplicationId) {
+                          @Value("${OAUTH2_APPLICATION_ID:}") String oauth2ApplicationId) {
         this.redirectUri = redirectUri;
         this.hostname = hostname;
         this.oauth2ApplicationId = oauth2ApplicationId;

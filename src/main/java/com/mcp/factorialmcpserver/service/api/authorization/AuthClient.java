@@ -29,8 +29,8 @@ public class AuthClient {
     public AuthClient(RestClient baseClient,
                       TokenMapper tokenMapper,
                       @Value("${factorial-api.redirect-uri}") String redirectUri,
-                      @Value("${OAUTH2_APPLICATION_ID}") String oauth2ApplicationId,
-                      @Value("${OAUTH2_APPLICATION_SECRET}") String oauth2ApplicationSecret
+                      @Value("${OAUTH2_APPLICATION_ID:}") String oauth2ApplicationId,
+                      @Value("${OAUTH2_APPLICATION_SECRET:}") String oauth2ApplicationSecret
     ) {
         this.baseClient = baseClient;
         this.tokenMapper = tokenMapper;
