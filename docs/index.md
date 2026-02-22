@@ -68,6 +68,7 @@ OAUTH2_APPLICATION_SECRET=your-app-secret
 claude mcp add --transport stdio mcp-factorial -- \
   docker run -i --rm -p 7000:7000 \
   -v factorial-mcp-server_cache:/app/data \
+  -e EXIT_ON_EOF=true \
   --env-file /path/to/.env \
   ghcr.io/ratek-20/factorial-mcp-server:latest \
   --transport stdio
