@@ -15,15 +15,20 @@ run:
         -p {{PORT}}:7000 \
         -e OAUTH2_APPLICATION_ID=oauth-app-id \
         -e OAUTH2_APPLICATION_SECRET=oauth-app-secret \
+        -e EXIT_ON_EOF=true \
         -v factorial-mcp-server_cache:/app/data \
         --name {{APP}} {{APP}}
 # replace oauth env vars according to your actual app data
+
+run-vanilla:
+    docker run {{APP}}
 
 debug:
     docker run -i --rm \
         -p {{PORT}}:7000 -p 5005:5005 \
         -e OAUTH2_APPLICATION_ID=oauth-app-id \
         -e OAUTH2_APPLICATION_SECRET=oauth-app-secret \
+        -e EXIT_ON_EOF=true \
         -e JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" \
         -v factorial-mcp-server_cache:/app/data \
         --name {{APP}} {{APP}}
@@ -36,6 +41,7 @@ inspect:
               -v factorial-mcp-server_cache:/app/data \
               -e OAUTH2_APPLICATION_ID=oauth-app-id \
               -e OAUTH2_APPLICATION_SECRET=oauth-app-secret \
+              -e EXIT_ON_EOF=true \
               -e JAVA_TOOL_OPTIONS=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005\" \
               factorial-mcp-server:latest \
               --name factorial-mcp-server
