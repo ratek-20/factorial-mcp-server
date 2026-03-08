@@ -12,7 +12,7 @@
 
 ---
 
-## 📖 What is This?
+## 📖 Overview
 
 This is an [MCP (Model Context Protocol)](https://modelcontextprotocol.io/docs/getting-started/intro) server for [Factorial](https://factorialhr.com/), the popular HR management system.
 
@@ -259,7 +259,7 @@ The server exposes **port 7000** with a minimal HTTP server that handles OAuth c
 - **Java 25** - Latest LTS Java version
 - **Spring Boot 3.5.9** - Application framework
 - **Spring AI 1.1.2** - MCP server implementation
-- **Spring Web** - HTTP server for OAuth callbacks
+- **Spring Web** - API client calls to Factorial
 
 **Testing:**
 - **JUnit Jupiter 5** - Test framework
