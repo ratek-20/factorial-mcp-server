@@ -55,10 +55,10 @@ All through natural conversation with your AI assistant.
 
 **1. Get OAuth credentials** from your company administrator (see [README](../README.md#-what-your-company-admin-needs-to-do))
 
-**2. Create `.env` file:**
+**2. Export your OAuth credentials:**
 ```bash
-OAUTH2_APPLICATION_ID=your-app-id
-OAUTH2_APPLICATION_SECRET=your-app-secret
+export OAUTH2_APPLICATION_ID=your-app-id
+export OAUTH2_APPLICATION_SECRET=your-app-secret
 ```
 
 **3. Add to your AI client:**
@@ -69,7 +69,8 @@ claude mcp add --transport stdio mcp-factorial -- \
   docker run -i --rm -p 7000:7000 \
   -v factorial-mcp-server_cache:/app/data \
   -e EXIT_ON_EOF=true \
-  --env-file /path/to/.env \
+  -e OAUTH2_APPLICATION_ID \
+  -e OAUTH2_APPLICATION_SECRET \
   ghcr.io/ratek-20/factorial-mcp-server:latest \
   --transport stdio
 ```

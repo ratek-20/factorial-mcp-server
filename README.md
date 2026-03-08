@@ -86,10 +86,10 @@ The server exposes the following tools to AI agents:
 
 #### Installation Steps
 
-1. **Create a `.env` file** with your OAuth credentials:
+1. **Export your OAuth credentials** in the shell that launches your AI client:
    ```bash
-   OAUTH2_APPLICATION_ID=<your-actual-id>
-   OAUTH2_APPLICATION_SECRET=<your-actual-secret>
+   export OAUTH2_APPLICATION_ID=<your-actual-id>
+   export OAUTH2_APPLICATION_SECRET=<your-actual-secret>
    ```
 
 2. **Configure the MCP server in your AI client:**
@@ -112,8 +112,10 @@ The server exposes the following tools to AI agents:
            "factorial-mcp-server_cache:/app/data",
            "-e",
            "EXIT_ON_EOF=true",
-           "--env-file",
-           "<absolute-path-to-your-.env-file>",
+           "-e",
+           "OAUTH2_APPLICATION_ID",
+           "-e",
+           "OAUTH2_APPLICATION_SECRET",
            "ghcr.io/ratek-20/factorial-mcp-server:latest",
            "--transport",
            "stdio"
@@ -168,8 +170,10 @@ The server exposes the following tools to AI agents:
            "factorial-mcp-server_cache:/app/data",
            "-e",
            "EXIT_ON_EOF=true",
-           "--env-file",
-           "<absolute-path-to-your-.env-file>",
+           "-e",
+           "OAUTH2_APPLICATION_ID",
+           "-e",
+           "OAUTH2_APPLICATION_SECRET",
            "ghcr.io/ratek-20/factorial-mcp-server:latest",
            "--transport",
            "stdio"
@@ -188,13 +192,21 @@ The server exposes the following tools to AI agents:
      docker run -i --rm -p 7000:7000 \
      -v factorial-mcp-server_cache:/app/data \
      -e EXIT_ON_EOF=true \
-     --env-file <absolute-path-to-your-.env-file> \
+     -e OAUTH2_APPLICATION_ID \
+     -e OAUTH2_APPLICATION_SECRET \
      ghcr.io/ratek-20/factorial-mcp-server:latest \
      --transport stdio
    ```
    </details>
 
    > ⚠️ **Important:** The syntax and structure may vary between AI clients. Consult your client's documentation for the exact configuration format.
+   >
+   > If you keep credentials in a local `.env` file, load it into your shell before starting the AI client:
+   > ```bash
+   > set -a
+   > source .env
+   > set +a
+   > ```
 
 3. **Launch your AI client** - The MCP server will automatically connect when the client starts.
 
